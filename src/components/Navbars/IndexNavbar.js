@@ -2,6 +2,7 @@ import React from 'react';
 // nodejs library that concatenates strings
 import classnames from 'classnames';
 // reactstrap components
+import { Link } from 'react-router-dom';
 import {
   Button,
   Collapse,
@@ -44,13 +45,8 @@ function IndexNavbar() {
     <Navbar className={classnames('fixed-top', navbarColor)} expand='lg'>
       <Container>
         <div className='navbar-translate'>
-          <NavbarBrand
-            data-placement='bottom'
-            href='/'
-            target='_blank'
-            title='Coded by Creative Tim'
-          >
-            Paper Kit React
+          <NavbarBrand data-placement='bottom' href='/' target='_blank'>
+            E-quizy
           </NavbarBrand>
           <button
             aria-expanded={navbarCollapse}
