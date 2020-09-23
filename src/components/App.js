@@ -7,38 +7,16 @@ import '../assets/scss/paper-kit.scss?v=1.2.0';
 import '../assets/demo/demo.css?v=1.2.0';
 
 // components
-import Index from '../views/Index.js';
-import NucleoIcons from '../views/NucleoIcons.js';
-import LandingPage from '../views/examples/LandingPage.js';
-import ProfilePage from '../views/examples/ProfilePage.js';
-import RegisterPage from '../views/examples/RegisterPage.js';
+import Landing from './Landing';
+import Navbar from './Navbars/IndexNavbar';
 
 export class App extends Component {
   render() {
     return (
       <BrowserRouter>
+        <Navbar />
         <Switch>
-          <Route exact path='/' render={(props) => <Index {...props} />} />
-          <Route
-            exact
-            path='/nucleo-icons'
-            render={(props) => <NucleoIcons {...props} />}
-          />
-          <Route
-            exact
-            path='/landing-page'
-            render={(props) => <LandingPage {...props} />}
-          />
-          <Route
-            exact
-            path='/profile-page'
-            render={(props) => <ProfilePage {...props} />}
-          />
-          <Route
-            exact
-            path='/register-page'
-            render={(props) => <RegisterPage {...props} />}
-          />
+          <Route exact path='/' component={Landing} />
         </Switch>
       </BrowserRouter>
     );
