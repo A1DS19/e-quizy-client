@@ -1,6 +1,4 @@
-// eslint-disable-next-line
 import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
 
 export class Landing extends Component {
   render() {
@@ -36,15 +34,13 @@ export class Landing extends Component {
               <div className='col-md-4'>
                 <div className='info'>
                   <div className='icon'>
-                    <a style={{ color: '#f5593d' }}>
+                    <i style={{ color: '#f5593d' }}>
                       <i className='fa fa-user-plus' aria-hidden='true'></i>
-                    </a>
+                    </i>
                   </div>
 
                   <div className='description'>
-                    <h4 className='info-title'>
-                      <a style={{ color: '#ffffff' }}>Regístrese</a>
-                    </h4>
+                    <h4 className='info-title'>Regístrese</h4>
                     <p>
                       Crea su períl con un simple paso y empieza a evaluar de una manera
                       novedosa y segura!
@@ -125,25 +121,6 @@ export class Landing extends Component {
             </div>
           </div>
         </div>
-        <footer className='footer footer-black'>
-          <div className='container'>
-            <div className='row'>
-              <nav className='footer-nav'>
-                <ul>
-                  <li>
-                    <a>E-QUIZY</a>
-                  </li>
-                </ul>
-              </nav>
-              <div className='credits ml-auto'>
-                <span className='copyright'>
-                  © {new Date().getFullYear}, made with{' '}
-                  <i className='fa fa-heart heart'></i> by Alex Quesada
-                </span>
-              </div>
-            </div>
-          </div>
-        </footer>
       </Fragment>
     );
   }
