@@ -9,7 +9,6 @@ import { signIn } from '../../actions';
 export class Login extends Component {
   onSubmit = (formValues) => {
     this.props.signIn(formValues, () => {
-      console.log(formValues);
       this.props.history.push('/');
     });
   };
