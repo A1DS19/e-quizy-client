@@ -3,9 +3,11 @@
   "version": "1.2.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.20.0",
     "bootstrap": "^4.5.2",
     "classnames": "2.2.6",
     "email-validator": "^2.0.4",
+    "http-proxy-middleware": "^1.0.5",
     "moment": "2.26.0",
     "node-sass": "4.14.1",
     "nouislider": "14.5.0",
@@ -56,5 +58,6 @@
   "devDependencies": {
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8"
-  }
+  },
+  "proxy": "http://localhost:60657"
 }
