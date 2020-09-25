@@ -1,11 +1,16 @@
 import React, { Component, Fragment } from 'react';
 import { Button, Card, Form, Input, Container, Row, Col, Alert } from 'reactstrap';
+import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import * as emailValidate from 'email-validator';
+import { connect } from 'react-redux';
+import { signUp } from '../../actions';
 
 export class Register extends Component {
   onSubmit = (formValues) => {
-    console.log(formValues);
+    this.props.signUp(formValues, () => {
+      this.props.history.push('/auth/login');
+    });
   };
 
   renderError({ error, touched }) {
@@ -108,7 +113,10 @@ const validate = (formValues) => {
   return errors;
 };
 
-export default reduxForm({
-  validate,
-  form: 'registerForm',
-})(Register);
+export default compose(
+  connect(null, { signUp }),
+  reduxForm({
+    validate,
+    form: 'registerForm',
+  })
+)(Register);
