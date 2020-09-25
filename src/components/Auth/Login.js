@@ -1,12 +1,33 @@
 import React, { Component, Fragment } from 'react';
-import { Button, Card, Form, Input, Container, Row, Col } from 'reactstrap';
+import { Button, Card, Form, Input, Container, Row, Col, Alert } from 'reactstrap';
+import { reduxForm, Field } from 'redux-form';
+import * as emailValidate from 'email-validator';
 
 export class Login extends Component {
+  onSubmit = (formValues) => {
+    console.log(formValues);
+  };
+
+  renderError({ error, touched }) {
+    if (error && touched) {
+      return <Alert color='danger'>{error}</Alert>;
+    }
+  }
+
+  renderInput = ({ input, label, meta, type }) => {
+    return (
+      <Fragment>
+        <label>{label}</label>
+        <Input {...input} autoComplete='off' type={type} />
+        {this.renderError(meta)}
+      </Fragment>
+    );
+  };
   render() {
     return (
       <Fragment>
         <div
-          class='page-header'
+          className='page-header'
           style={{
             backgroundImage: `url(${require('../../assets/img/sections/bruno-abatti.jpg')})`,
           }}
@@ -16,18 +37,31 @@ export class Login extends Component {
             <Row>
               <Col className='ml-auto mr-auto' lg='4'>
                 <Card className='card-register ml-auto mr-auto'>
-                  <h3 className='title mx-auto'>Welcome</h3>
+                  <h3 className='title mx-auto'>Login</h3>
 
                   <Form className='register-form'>
-                    <label>Email</label>
-                    <Input placeholder='Email' type='text' />
-                    <label>Contrasena</label>
-                    <Input placeholder='Contrasena' type='password' />
+                    <Field
+                      name='email'
+                      type='text'
+                      component={this.renderInput}
+                      label='Email'
+                    />
+
+                    <Field
+                      name='password'
+                      type='password'
+                      component={this.renderInput}
+                      label='Contrasena'
+                    />
                     <Button block className='btn-round' color='danger'>
                       Register
                     </Button>
                   </Form>
-                  <div className='forgot'></div>
+                  <div className='forgot'>
+                    <a href='#' style={{ color: 'white' }}>
+                      Olvido su contrasena?
+                    </a>
+                  </div>
                 </Card>
               </Col>
             </Row>
@@ -37,5 +71,23 @@ export class Login extends Component {
     );
   }
 }
+const validate = (formValues) => {
+  const { email, password } = formValues;
+  const errors = {};
 
-export default Login;
+  if (!email) {
+    errors.email = 'Porfavor ingrese un email';
+  }
+  if (email && !emailValidate.validate(email)) {
+    errors.email = 'Porfavor ingrese un email correcto';
+  }
+  if (!password) {
+    errors.password = 'Porfavor ingrese una contrasena';
+  }
+  return errors;
+};
+
+export default reduxForm({
+  validate,
+  form: 'login',
+})(Login);
