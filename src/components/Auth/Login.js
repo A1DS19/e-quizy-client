@@ -2,10 +2,16 @@ import React, { Component, Fragment } from 'react';
 import { Button, Card, Form, Input, Container, Row, Col, Alert } from 'reactstrap';
 import { reduxForm, Field } from 'redux-form';
 import * as emailValidate from 'email-validator';
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+import { signIn } from '../../actions';
 
 export class Login extends Component {
   onSubmit = (formValues) => {
-    console.log(formValues);
+    this.props.signIn(formValues, () => {
+      console.log(formValues);
+      this.props.history.push('/');
+    });
   };
 
   renderError({ error, touched }) {
@@ -39,7 +45,10 @@ export class Login extends Component {
                 <Card className='card-register ml-auto mr-auto'>
                   <h3 className='title mx-auto'>Login</h3>
 
-                  <Form className='register-form'>
+                  <Form
+                    className='register-form'
+                    onSubmit={this.props.handleSubmit(this.onSubmit)}
+                  >
                     <Field
                       name='email'
                       type='text'
@@ -87,7 +96,10 @@ const validate = (formValues) => {
   return errors;
 };
 
-export default reduxForm({
-  validate,
-  form: 'login',
-})(Login);
+export default compose(
+  connect(null, { signIn }),
+  reduxForm({
+    validate,
+    form: 'login',
+  })
+)(Login);
