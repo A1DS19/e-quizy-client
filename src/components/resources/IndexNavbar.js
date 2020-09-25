@@ -1,5 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
+import { signOut } from '../../actions';
+import { connect } from 'react-redux';
+
 import {
   Collapse,
   Navbar,
@@ -97,6 +100,13 @@ export class IndexNavbar extends Component {
     );
   }
 
+  signOut() {
+    this.props.signOut(() => {
+      console.log(true);
+      this.props.history.push('/');
+    });
+  }
+
   render() {
     return (
       <Fragment>
@@ -131,7 +141,7 @@ export class IndexNavbar extends Component {
                 {this.renderNavNoAuth()}
                 {/*ESTO DICE SI QUE TIPO DE NAVBAR MOSTRAR FIN*/}
 
-                <NavItem>
+                <NavItem onClick={this.signOut.bind(this)}>
                   <NavLink data-placement='bottom' href='/'>
                     <i className='fa fa-sign-out' />
                     <p className='d-lg-none'>Salir</p>
@@ -146,4 +156,4 @@ export class IndexNavbar extends Component {
   }
 }
 
-export default IndexNavbar;
+export default connect(null, { signOut })(IndexNavbar);
