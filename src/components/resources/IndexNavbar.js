@@ -100,12 +100,21 @@ export class IndexNavbar extends Component {
     );
   }
 
-  signOut() {
+  validateAuth = (authenticated) => {
+    if (authenticated) {
+      console.log('auth' + authenticated);
+      return this.renderNavAuth();
+    }
+    console.log('not auth' + authenticated);
+    return this.renderNavNoAuth();
+  };
+
+  signOut = () => {
     this.props.signOut(() => {
       console.log(true);
       this.props.history.push('/');
     });
-  }
+  };
 
   render() {
     return (
@@ -113,12 +122,7 @@ export class IndexNavbar extends Component {
         <Navbar className={classnames('fixed-top', this.state.navbarColor)} expand='lg'>
           <Container>
             <div className='navbar-translate'>
-              <NavbarBrand
-                data-placement='bottom'
-                href='/'
-                target='_blank'
-                title='Coded by Creative Tim'
-              >
+              <NavbarBrand data-placement='bottom' href='/'>
                 e-quizy
               </NavbarBrand>
 
@@ -138,10 +142,10 @@ export class IndexNavbar extends Component {
             <Collapse className='justify-content-end' navbar isOpen={this.toggleNavbar}>
               <Nav navbar>
                 {/*ESTO DICE SI QUE TIPO DE NAVBAR MOSTRAR*/}
-                {this.renderNavNoAuth()}
+                {this.validateAuth(this.props.authenticated)}
                 {/*ESTO DICE SI QUE TIPO DE NAVBAR MOSTRAR FIN*/}
 
-                <NavItem onClick={this.signOut.bind(this)}>
+                <NavItem onClick={this.signOut}>
                   <NavLink data-placement='bottom' href='/'>
                     <i className='fa fa-sign-out' />
                     <p className='d-lg-none'>Salir</p>
@@ -156,4 +160,8 @@ export class IndexNavbar extends Component {
   }
 }
 
-export default connect(null, { signOut })(IndexNavbar);
+const mapStateToProps = (state) => {
+  return { authenticated: state.auth.authenticated };
+};
+
+export default connect(mapStateToProps, { signOut })(IndexNavbar);
