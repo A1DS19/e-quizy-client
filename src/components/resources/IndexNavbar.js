@@ -38,11 +38,13 @@ export class IndexNavbar extends Component {
   updateNavbarColor = () => {
     if (document.documentElement.scrollTop > 299 || document.body.scrollTop > 299) {
       this.setState({ navbarColor: '' });
+      document.getElementById('nav-title').style.color = 'gray';
     } else if (
       document.documentElement.scrollTop < 300 ||
       document.body.scrollTop < 300
     ) {
       this.setState({ navbarColor: 'navbar-transparent' });
+      document.getElementById('nav-title').style.color = 'white';
     }
   };
 
@@ -141,8 +143,10 @@ export class IndexNavbar extends Component {
           <Container>
             <div className='navbar-translate'>
               <NavbarBrand data-placement='bottom'>
-                <Link to='/' style={{ color: 'white' }}>
-                  e-quizy
+                <Link to='/'>
+                  <p id='nav-title' className='d-lg-none' style={{ color: 'white' }}>
+                    e-quizy
+                  </p>
                 </Link>
               </NavbarBrand>
 
