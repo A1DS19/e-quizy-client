@@ -16,6 +16,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 export class IndexNavbar extends Component {
   state = {
@@ -56,16 +57,24 @@ export class IndexNavbar extends Component {
     return (
       <Fragment>
         <NavItem>
-          <NavLink data-placement='bottom' href='/auth/register'>
+          <NavLink data-placement='bottom'>
             <i className='fa fa-user-plus' />
-            <p className='d-lg-none '>Registro</p>
+            <Link to='/auth/register'>
+              <p className='d-lg-none' style={{ color: 'gray' }}>
+                Registro
+              </p>
+            </Link>
           </NavLink>
         </NavItem>
 
         <NavItem>
-          <NavLink data-placement='bottom' href='/auth/login'>
+          <NavLink data-placement='bottom'>
             <i className='fa fa-sign-in' />
-            <p className='d-lg-none '>Login</p>
+            <Link to='/auth/login'>
+              <p className='d-lg-none' style={{ color: 'gray' }}>
+                Login
+              </p>
+            </Link>
           </NavLink>
         </NavItem>
       </Fragment>
@@ -91,9 +100,19 @@ export class IndexNavbar extends Component {
           </DropdownMenu>
         </Dropdown>
         <NavItem>
-          <NavLink data-placement='bottom' href='/'>
+          <NavLink data-placement='bottom'>
             <i className='fa fa-id-card-o' />
-            <p className='d-lg-none'>Mi Perfil</p>
+            <Link to='/'>
+              <p className='d-lg-none' style={{ color: 'gray' }}>
+                Mi Perfil
+              </p>
+            </Link>
+          </NavLink>
+        </NavItem>
+        <NavItem onClick={this.signOut}>
+          <NavLink data-placement='bottom' href='/'>
+            <i className='fa fa-sign-out' />
+            <p className='d-lg-none'>Salir</p>
           </NavLink>
         </NavItem>
       </Fragment>
@@ -105,13 +124,12 @@ export class IndexNavbar extends Component {
       console.log('auth' + authenticated);
       return this.renderNavAuth();
     }
-    console.log('not auth' + authenticated);
+    console.log('auth' + authenticated);
     return this.renderNavNoAuth();
   };
 
   signOut = () => {
     this.props.signOut(() => {
-      console.log(true);
       this.props.history.push('/');
     });
   };
@@ -122,8 +140,10 @@ export class IndexNavbar extends Component {
         <Navbar className={classnames('fixed-top', this.state.navbarColor)} expand='lg'>
           <Container>
             <div className='navbar-translate'>
-              <NavbarBrand data-placement='bottom' href='/'>
-                e-quizy
+              <NavbarBrand data-placement='bottom'>
+                <Link to='/' style={{ color: 'white' }}>
+                  e-quizy
+                </Link>
               </NavbarBrand>
 
               <button
@@ -141,16 +161,9 @@ export class IndexNavbar extends Component {
 
             <Collapse className='justify-content-end' navbar isOpen={this.toggleNavbar}>
               <Nav navbar>
-                {/*ESTO DICE SI QUE TIPO DE NAVBAR MOSTRAR*/}
+                {/*ESTO DECIDE  QUE TIPO DE NAVBAR MOSTRAR*/}
                 {this.validateAuth(this.props.authenticated)}
-                {/*ESTO DICE SI QUE TIPO DE NAVBAR MOSTRAR FIN*/}
-
-                <NavItem onClick={this.signOut}>
-                  <NavLink data-placement='bottom' href='/'>
-                    <i className='fa fa-sign-out' />
-                    <p className='d-lg-none'>Salir</p>
-                  </NavLink>
-                </NavItem>
+                {/*ESTO DECIDE  QUE TIPO DE NAVBAR MOSTRAR FIN*/}
               </Nav>
             </Collapse>
           </Container>
