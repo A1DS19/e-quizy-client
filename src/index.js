@@ -14,7 +14,14 @@ import App from './components/App';
 import reducers from './reducers';
 
 //config
-const store = createStore(reducers, {}, composeWithDevTools(applyMiddleware(reduxThunk)));
+const store = createStore(
+  reducers,
+  {
+    //peristir login
+    auth: { authenticated: localStorage.getItem('token') },
+  },
+  composeWithDevTools(applyMiddleware(reduxThunk))
+);
 
 ReactDOM.render(
   <Provider store={store}>
