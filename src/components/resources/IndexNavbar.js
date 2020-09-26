@@ -27,7 +27,6 @@ export class IndexNavbar extends Component {
 
   toggleDropDown = () => {
     this.setState({ dropDownOpen: !this.state.dropDownOpen });
-    console.log(this.state.dropDownOpen);
   };
 
   toggleNavbar = () => {
@@ -60,8 +59,8 @@ export class IndexNavbar extends Component {
       <Fragment>
         <NavItem>
           <NavLink data-placement='bottom'>
-            <i className='fa fa-user-plus' />
             <Link to='/auth/register'>
+              <i className='fa fa-user-plus' style={{ color: 'gray' }} />
               <p className='d-lg-none' style={{ color: 'gray' }}>
                 Registro
               </p>
@@ -71,8 +70,8 @@ export class IndexNavbar extends Component {
 
         <NavItem>
           <NavLink data-placement='bottom'>
-            <i className='fa fa-sign-in' />
             <Link to='/auth/login'>
+              <i className='fa fa-sign-in' style={{ color: 'gray' }} />
               <p className='d-lg-none' style={{ color: 'gray' }}>
                 Login
               </p>
@@ -142,9 +141,9 @@ export class IndexNavbar extends Component {
             <div className='navbar-translate'>
               <NavbarBrand data-placement='bottom'>
                 <Link to='/'>
-                  <p id='nav-title' className='d-lg-none' style={{ color: 'white' }}>
+                  <h5 id='nav-title' style={{ color: 'white' }}>
                     e-quizy
-                  </p>
+                  </h5>
                 </Link>
               </NavbarBrand>
 
