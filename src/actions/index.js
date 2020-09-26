@@ -19,6 +19,7 @@ export const signIn = (formValues, callback) => {
       const res = await axios.post('/api/accounts/login', formValues);
       dispatch({ type: AUTH_USER, payload: res.data.token });
       localStorage.setItem('token', res.data.token);
+      localStorage.setItem('currentUser', res.data.user);
       callback();
       console.log(res);
     } catch (error) {
@@ -32,6 +33,7 @@ export const signOut = (callback) => {
   return (dispatch) => {
     dispatch({ type: AUTH_USER, payload: '' });
     localStorage.removeItem('token');
+    localStorage.removeItem('currrentUser');
     callback();
   };
 };
