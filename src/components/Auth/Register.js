@@ -9,6 +9,7 @@ import { signUp } from '../../actions';
 export class Register extends Component {
   onSubmit = (formValues) => {
     this.props.signUp(formValues, () => {
+      console.log(formValues);
       this.props.history.push('/auth/login');
     });
   };
@@ -49,11 +50,33 @@ export class Register extends Component {
                     className='register-form'
                     onSubmit={this.props.handleSubmit(this.onSubmit)}
                   >
+                    <label>Tipo de perfil</label>
+                    <br />
+                    <Field name='roleName' component='select' className='form-control'>
+                      <option disabled={true} defaultChecked={true}></option>
+                      <option value='Professor'>Profesor</option>
+                      <option value='Student'>Estudiante</option>
+                    </Field>
+
                     <Field
                       name='email'
                       type='text'
                       component={this.renderInput}
                       label='Email'
+                    />
+
+                    <Field
+                      name='firstName'
+                      type='text'
+                      component={this.renderInput}
+                      label='Nombre'
+                    />
+
+                    <Field
+                      name='lastName'
+                      type='text'
+                      component={this.renderInput}
+                      label='Primer Apellido'
                     />
 
                     <Field
@@ -91,9 +114,18 @@ export class Register extends Component {
 }
 
 const validate = (formValues) => {
-  const { email, password, confirmPassword } = formValues;
+  const { email, password, confirmPassword, roleName, firstName, lastName } = formValues;
   const errors = {};
 
+  if (!roleName) {
+    errors.roleName = 'Porfavor escoja el tipo de perfil';
+  }
+  if (!firstName) {
+    errors.firstName = 'Porfavor ingrese su nombre';
+  }
+  if (!lastName) {
+    errors.lastName = 'Porfavor ingrese su apellido';
+  }
   if (!email) {
     errors.email = 'Porfavor ingrese un email';
   }
