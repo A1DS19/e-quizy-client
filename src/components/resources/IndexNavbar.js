@@ -123,10 +123,8 @@ export class IndexNavbar extends Component {
 
   validateAuth = (authenticated) => {
     if (authenticated) {
-      console.log('auth' + authenticated);
       return this.renderNavAuth();
     }
-    console.log('auth' + authenticated);
     return this.renderNavNoAuth();
   };
 
