@@ -1,6 +1,7 @@
-import { AUTH_ERROR, AUTH_USER } from './types';
+import { AUTH_ERROR, AUTH_USER, FETCH_USER } from './types';
 import axios from 'axios';
 
+//AUTH ACTIONS INICIO:
 export const signUp = (formValues, callback) => {
   return async (dispatch) => {
     try {
@@ -19,7 +20,7 @@ export const signIn = (formValues, callback) => {
       const res = await axios.post('/api/accounts/login', formValues);
       dispatch({ type: AUTH_USER, payload: res.data.token });
       localStorage.setItem('token', res.data.token);
-      localStorage.setItem('currentUser', res.data.user);
+      localStorage.setItem('currentUser', JSON.stringify(res.data.user));
       callback();
       console.log(res);
     } catch (error) {
@@ -33,7 +34,17 @@ export const signOut = (callback) => {
   return (dispatch) => {
     dispatch({ type: AUTH_USER, payload: '' });
     localStorage.removeItem('token');
-    localStorage.removeItem('currrentUser');
+    localStorage.removeItem('currentUser');
     callback();
+  };
+};
+//AUTH ACTIONS FIN
+
+//USER ACTIONS INICIO:
+export const fetchUser = () => {
+  return async (dispatch) => {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+    console.log(currentUser);
+    dispatch({ type: FETCH_USER, payload: currentUser });
   };
 };
