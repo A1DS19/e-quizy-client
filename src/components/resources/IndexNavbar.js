@@ -1,6 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import classnames from 'classnames';
-import { signOut } from '../../actions';
+import { signOut, fetchUser } from '../../actions';
 import { connect } from 'react-redux';
 
 import {
@@ -54,6 +54,10 @@ export class IndexNavbar extends Component {
     };
   }
 
+  componentDidMount() {
+    this.props.fetchUser();
+  }
+
   renderNavNoAuth() {
     return (
       <Fragment>
@@ -88,30 +92,37 @@ export class IndexNavbar extends Component {
         <Dropdown
           group
           isOpen={this.state.dropDownOpen}
-          size='sm'
+          size='md'
           toggle={this.toggleDropDown}
+          className='nav-item dropdown'
         >
-          <DropdownToggle caret>Pruebas</DropdownToggle>
-          <DropdownMenu>
-            <DropdownItem href='#'>Crear</DropdownItem>
-            <DropdownItem divider />
-            <DropdownItem href='#'>Pruebas</DropdownItem>
-            <DropdownItem divider />
-            <DropdownItem href='#'>Respuestas</DropdownItem>
+          <DropdownToggle className='nav-link dropdown-toggle mr-auto mt-4' caret>
+            Pruebas
+          </DropdownToggle>
+          <DropdownMenu className='dropdown-menu dropdown-menu-right dropdown-danger'>
+            <DropdownItem className='dropdown-item' href='#'>
+              Crear
+            </DropdownItem>
+            <DropdownItem className='dropdown-item' href='#'>
+              Pruebas
+            </DropdownItem>
+            <DropdownItem className='dropdown-item' href='#'>
+              Respuestas
+            </DropdownItem>
           </DropdownMenu>
         </Dropdown>
+
         <NavItem>
           <NavLink data-placement='bottom'>
-            <i className='fa fa-id-card-o' />
-            <Link to='/'>
-              <p className='d-lg-none' style={{ color: 'gray' }}>
-                Mi Perfil
-              </p>
+            <Link to='/profile/user_profile' style={{ color: 'gray' }}>
+              <i className='fa fa-id-card-o' />
+              <p className='d-lg-none'>Mi Perfil</p>
             </Link>
           </NavLink>
         </NavItem>
+
         <NavItem onClick={this.signOut}>
-          <NavLink data-placement='bottom' href='/'>
+          <NavLink data-placement='bottom' href='/' style={{ color: 'gray' }}>
             <i className='fa fa-sign-out' />
             <p className='d-lg-none'>Salir</p>
           </NavLink>
@@ -160,7 +171,7 @@ export class IndexNavbar extends Component {
               </button>
             </div>
 
-            <Collapse className='justify-content-end' navbar isOpen={this.toggleNavbar}>
+            <Collapse className='justify-content-end' navbar>
               <Nav navbar>
                 {/*ESTO DECIDE  QUE TIPO DE NAVBAR MOSTRAR*/}
                 {this.validateAuth(this.props.authenticated)}
@@ -175,7 +186,7 @@ export class IndexNavbar extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { authenticated: state.auth.authenticated };
+  return { authenticated: state.auth.authenticated, user: state.user.currentUser };
 };
 
-export default connect(mapStateToProps, { signOut })(IndexNavbar);
+export default connect(mapStateToProps, { signOut, fetchUser })(IndexNavbar);
