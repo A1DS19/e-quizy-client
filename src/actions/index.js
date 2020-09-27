@@ -19,7 +19,7 @@ export const signIn = (formValues, callback) => {
       const res = await axios.post('/api/accounts/login', formValues);
       dispatch({ type: AUTH_USER, payload: res.data.token });
       localStorage.setItem('token', res.data.token);
-      localStorage.setItem('currentUser', res.data.user);
+      localStorage.setItem('currentUser', JSON.stringify(res.data.user));
       callback();
       console.log(res);
     } catch (error) {
