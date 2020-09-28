@@ -1,0 +1,11 @@
+table {
+  width: 100%;
+}
+
+i {
+  cursor: pointer;
+}
+
+.card-plain {
+  border-radius: 2%;
+}
