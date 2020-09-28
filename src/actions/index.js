@@ -1,4 +1,4 @@
-import { AUTH_ERROR, AUTH_USER, FETCH_USER } from './types';
+import { AUTH_ERROR, AUTH_USER, FETCH_USER, UPDATE_PERSONAL_DATA } from './types';
 import axios from 'axios';
 
 //AUTH ACTIONS INICIO:
@@ -20,9 +20,7 @@ export const signIn = (formValues, callback) => {
       const res = await axios.post('/api/accounts/login', formValues);
       dispatch({ type: AUTH_USER, payload: res.data.token });
       localStorage.setItem('token', res.data.token);
-      localStorage.setItem('currentUser', JSON.stringify(res.data.user));
       callback();
-      console.log(res);
     } catch (error) {
       console.log(`ERROR AUTENTICACION:${error}`);
       dispatch({ type: AUTH_ERROR, payload: error });
@@ -34,7 +32,6 @@ export const signOut = (callback) => {
   return (dispatch) => {
     dispatch({ type: AUTH_USER, payload: '' });
     localStorage.removeItem('token');
-    localStorage.removeItem('currentUser');
     callback();
   };
 };
@@ -43,8 +40,48 @@ export const signOut = (callback) => {
 //USER ACTIONS INICIO:
 export const fetchUser = () => {
   return async (dispatch) => {
-    const currentUser = JSON.parse(localStorage.getItem('currentUser'));
-    console.log(currentUser);
-    dispatch({ type: FETCH_USER, payload: currentUser });
+    const res = await axios.get('/api/accounts/userbytoken', {
+      headers: {
+        Authorization: localStorage.getItem('token'),
+      },
+    });
+    console.log(res.data);
+    dispatch({ type: FETCH_USER, payload: res.data });
+  };
+};
+
+export const updateImgState = (img, callback) => {
+  return async (dispatch) => {
+    try {
+      const formdata = new FormData();
+      formdata.append('img', img);
+
+      const res = await axios.post('/api/accounts/foto', formdata, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      dispatch({ type: FETCH_USER, payload: res.data });
+      callback();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+
+export const updatePersonalData = (formValues, callback) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.put('/api/accounts/update', formValues, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      console.log(res);
+      dispatch({ type: FETCH_USER, payload: res.data });
+      callback();
+    } catch (error) {
+      console.log(error);
+    }
   };
 };
