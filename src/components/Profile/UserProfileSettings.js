@@ -1,7 +1,31 @@
-import React, { Component, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import React, { Component } from 'react';
+
+import { connect } from 'react-redux';
+import { fetchUser } from '../../actions';
+
+import DatosPersonales from './DatosPersonales';
+import UserDireccion from './UserDireccion';
 
 export class UserProfileSettings extends Component {
+  state = {
+    render: null,
+  };
+
+  onClickCard() {
+    let render = this.state.render;
+    if (render === null) {
+      return null;
+    }
+
+    if (render === 'DATOS_PERSONALES') {
+      return <DatosPersonales history={this.props.history} />;
+    }
+
+    if (render === 'DIRECCIONES') {
+      return <UserDireccion history={this.props.history} />;
+    }
+  }
+
   render() {
     return (
       <div className='wrapper'>
@@ -22,19 +46,31 @@ export class UserProfileSettings extends Component {
                   Editar Perfíl
                 </h2>
               </div>
-              <nav className='nav' style={{ backgroundColor: 'transparent' }}>
-                <Link to='/' className='nav-link active' style={{ color: 'white' }}>
+              <ul className='nav' style={{ backgroundColor: 'transparent' }}>
+                <li
+                  onClick={() =>
+                    this.onClickCard(this.setState({ render: 'DATOS_PERSONALES' }))
+                  }
+                  className='nav-link active'
+                  style={{ color: 'white', cursor: 'pointer' }}
+                >
                   <i className='fa fa-id-card-o' aria-hidden='true' />
                   Datos personales
-                </Link>
+                </li>
 
-                <Link to='/' className='nav-link active' style={{ color: 'white' }}>
+                <li
+                  onClick={() =>
+                    this.onClickCard(this.setState({ render: 'DIRECCIONES' }))
+                  }
+                  className='nav-link active'
+                  style={{ color: 'white', cursor: 'pointer' }}
+                >
                   <i className='fa fa-map-marker' aria-hidden='true' />
                   Direcciones
-                </Link>
-              </nav>
+                </li>
+              </ul>
               <div className='container'>
-                <router-outlet>FORMS</router-outlet>
+                <router-outlet>{this.onClickCard(null)}</router-outlet>
               </div>
             </div>
           </div>
@@ -44,4 +80,7 @@ export class UserProfileSettings extends Component {
   }
 }
 
-export default UserProfileSettings;
+const mapStateToProps = (state) => {
+  return { user: state.user.currentUser };
+};
+export default connect(mapStateToProps, { fetchUser })(UserProfileSettings);
