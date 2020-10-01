@@ -11,6 +11,7 @@ import Login from '../components/Auth/Login';
 //Profile
 import UserProfile from '../components/Profile/UserProfile';
 import UserProfileSettings from '../components/Profile/UserProfileSettings';
+import UserDireccion from '../components/Profile/UserDireccion';
 
 export class App extends Component {
   render() {
