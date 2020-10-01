@@ -1,12 +1,16 @@
 import React, { Component } from 'react';
 
 import { connect } from 'react-redux';
-import { fetchUser } from '../../actions';
+import { fetchUser, fetchAddresses } from '../../actions';
 
 import DatosPersonales from './DatosPersonales';
 import UserDireccion from './UserDireccion';
 
 export class UserProfileSettings extends Component {
+  componentDidMount() {
+    this.props.fetchAddresses();
+  }
+
   state = {
     render: null,
   };
@@ -83,4 +87,6 @@ export class UserProfileSettings extends Component {
 const mapStateToProps = (state) => {
   return { user: state.user.currentUser };
 };
-export default connect(mapStateToProps, { fetchUser })(UserProfileSettings);
+export default connect(mapStateToProps, { fetchUser, fetchAddresses })(
+  UserProfileSettings
+);

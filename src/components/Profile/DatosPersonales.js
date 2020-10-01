@@ -167,6 +167,10 @@ export class DatosPersonales extends Component {
                         label='Fecha de nacimiento'
                         component={this.renderInput}
                         placeholder={this.props.initialValues.dateOfBirth}
+                        onFocus={(e) => {
+                          e.currentTarget.type = 'date';
+                          e.currentTarget.focus();
+                        }}
                       />
                     </div>
                   </div>
