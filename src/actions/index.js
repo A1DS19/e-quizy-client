@@ -137,3 +137,14 @@ export const deleteAddress = (id, callback) => {
     }
   };
 };
+
+export const updateDireccion = (id, formValues, callback) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.put(`/api/address/${id}`, formValues);
+      console.log(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
