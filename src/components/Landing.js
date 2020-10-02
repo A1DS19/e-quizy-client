@@ -23,9 +23,6 @@ export class Landing extends Component {
                 </h2>
               </div>
             </div>
-            <h6 className='category category-absolute'>
-              Designed and coded by Alex Quesada
-            </h6>
           </div>
         </div>
         <div className='section section-dark section-summary'>
