@@ -16,15 +16,17 @@ export class UserDireccion extends Component {
   }
 
   renderAddresses = () => {
-    return this.props.address.addressesListDTO.map((address) => (
-      <tr key={address.id}>
-        <td>{address.addressOne}</td>
-        <td>{address.addressTwo}</td>
-        <td>{address.otherSigns}</td>
-        <td>{address.city.name}</td>
-        <td>{this.renderAcciones(address.id)}</td>
-      </tr>
-    ));
+    return this.props.address.addressesListDTO.map((address) => {
+      return (
+        <tr key={address.id}>
+          <td>{address.addressOne}</td>
+          <td>{address.addressTwo}</td>
+          <td>{address.otherSigns}</td>
+          <td>{address.city.name}</td>
+          <td>{this.renderAcciones(address.id)}</td>
+        </tr>
+      );
+    });
   };
 
   onClickCreate = () => {
@@ -32,16 +34,15 @@ export class UserDireccion extends Component {
   };
 
   onClickUpdate = (id) => {
+    console.log(id);
     return (
       <UpdateDireccion id={id} history={this.props.history} onClose={this.onClose} />
     );
   };
 
   onClickDelete = (id) => {
-    //Que haga un update a la misma pagina
     this.props.deleteAddress(id, () => {
       alert('Direccion Borrada con exito');
-      //window.location.reload();
       this.props.fetchAddresses();
     });
   };
