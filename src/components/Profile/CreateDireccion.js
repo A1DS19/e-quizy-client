@@ -1,34 +1,26 @@
 import React, { Component, Fragment } from 'react';
-import { Input, Alert } from 'reactstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { reduxForm, Field } from 'redux-form';
+import { Formik } from 'formik';
+import * as Yup from 'yup';
+import ErrorValidation from '../resources/ErrorValidation';
 import { insertAddress, fetchAddresses } from '../../actions';
 
 export class CreateDireccion extends Component {
-  onSubmit = (formValues) => {
-    this.props.insertAddress(formValues, () => {
-      this.props.onClose();
-    });
-  };
+  validationSchema = Yup.object().shape({
+    typeAddressId: '',
+    addressOne: Yup.string().required('Debe la direccion uno'),
+    addressTwo: Yup.string().required('Debe la direccion dos'),
+    otherSigns: Yup.string().required('Debe agregar por lo menos una senal'),
+    countrieId: '',
+    stateId: '',
+    cityName: Yup.string().required('Debe agregar una ciudad'),
+    zipCode: Yup.string()
+      .required('Debe agregar el codigo postal')
+      .min(5, 'El codigo postal no puede tener menos de 4 digitos'),
+  });
 
-  renderError({ error, touched }) {
-    if (error && touched) {
-      return <Alert color='danger'>{error}</Alert>;
-    }
-  }
-
-  renderInput = ({ input, label, meta, type }) => {
-    return (
-      <Fragment>
-        <label>{label}</label>
-        <Input {...input} autoComplete='off' type={type} />
-        {this.renderError(meta)}
-      </Fragment>
-    );
-  };
   render() {
-    console.log(this.props.address);
     return (
       <div>
         <div
@@ -49,147 +41,233 @@ export class CreateDireccion extends Component {
               <h6 className='card-category'>Agregar dirección</h6>
               <p className='card-description'>Agrega una o varias direcciones</p>
 
-              <form
-                className='settings-form'
-                onSubmit={this.props.handleSubmit(this.onSubmit)}
+              <Formik
+                initialValues={{
+                  typeAddressId: 1,
+                  addressOne: '',
+                  addressTwo: '',
+                  otherSigns: '',
+                  countrieId: 1,
+                  stateId: 1,
+                  cityName: '',
+                  zipCode: '',
+                }}
+                validationSchema={this.validationSchema}
+                onSubmit={(values, { setSubmitting, resetForm }) => {
+                  setSubmitting(true);
+                  this.props.insertAddress(values, () => {
+                    this.props.onClose();
+                  });
+                  setSubmitting(false);
+                }}
               >
-                <div className='row'>
-                  <div className='col-md-6 col-sm-6'>
-                    <div className='form-group'>
-                      <label>Tipo dirección</label>
-                      <br />
-                      <Field
-                        name='typeAddressId'
-                        required
-                        component='select'
-                        className='form-control border-input'
-                      >
-                        <option disabled>Tipo</option>
-
-                        {this.props.address.typeAddressesDTO.map((type) => (
-                          <option key={type.id} value={type.id}>
-                            {type.type}
-                          </option>
-                        ))}
-                      </Field>
-                    </div>
-                  </div>
-                  <div className='col-md-6 col-sm-6'>
-                    <div className='form-group'>
-                      <Field
-                        name='addressOne'
-                        required
-                        type='text'
-                        className='form-control border-input'
-                        placeholder='Calle avenida, nombre de condominio...'
-                        component={this.renderInput}
-                        label='Dirección uno'
-                      />
-                    </div>
-                  </div>
-                  <div className='col-md-6 col-sm-6'>
-                    <div className='form-group'>
-                      <Field
-                        name='addressTwo'
-                        type='text'
-                        className='form-control border-input'
-                        placeholder='Número de casa, apartamento...'
-                        component={this.renderInput}
-                        label='Dirección dos'
-                      />
-                    </div>
-                  </div>
-                  <div className='col-md-6 col-sm-6'>
-                    <div className='form-group'>
-                      <Field
-                        name='otherSigns'
-                        type='text'
-                        className='form-control border-input'
-                        placeholder='Señas adicionales...'
-                        component={this.renderInput}
-                        label='Otras señas'
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div className='row'>
-                  <div className='col-md-6 col-sm-6'>
-                    <div className='form-group'>
-                      <label>País</label>
-                      <br />
-                      <Field
-                        className='form-control border-input'
-                        name='countrieId'
-                        required
-                        component='select'
-                      >
-                        <option disabled>País</option>
-                        {this.props.address.countriesListDTO.map((array) => (
-                          <option key={array.id} value={array.id}>
-                            {array.name}
-                          </option>
-                        ))}
-                      </Field>
-                    </div>
-                  </div>
-                  <div className='col-md-6 col-sm-6'>
-                    <div className='form-group'>
-                      <label>Provincia / Estado</label>
-                      <br />
-                      <Field
-                        name='stateId'
-                        className='form-control border-input'
-                        required
-                        component='select'
-                      >
-                        <option disabled>Provincia / Estado</option>
-                        {this.props.address.countriesListDTO.map((countrie) =>
-                          countrie.statesProvinces.map((city) => (
-                            <option key={city.id} value={city.id}>
-                              {city.name}
+                {({
+                  values,
+                  errors,
+                  touched,
+                  handleChange,
+                  handleBlur,
+                  handleSubmit,
+                  isSubmitting,
+                }) => (
+                  <form className='settings-form' onSubmit={handleSubmit}>
+                    {console.log(values)}
+                    <div className='row'>
+                      <div className='col-md-6 col-sm-6'>
+                        <div className='form-group'>
+                          <label htmlFor='typeAddressId'>Tipo dirección</label>
+                          <br />
+                          <select
+                            name='typeAddressId'
+                            required='true'
+                            className='form-control border-input'
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.typeAddressId}
+                          >
+                            <option selected='true' disabled='disabled'>
+                              Tipo
                             </option>
-                          ))
-                        )}
-                      </Field>
+                            {this.props.address.typeAddressesDTO.map((type) => (
+                              <option key={type.id} value={type.id}>
+                                {type.type}
+                              </option>
+                            ))}
+                          </select>
+                          {
+                            <ErrorValidation
+                              touched={touched.typeAddressId}
+                              message={errors.typeAddressId}
+                            />
+                          }
+                        </div>
+                      </div>
+                      <div className='col-md-6 col-sm-6'>
+                        <div className='form-group'>
+                          <label htmlFor='addressOne'>Direccion Uno</label>
+                          <input
+                            name='addressOne'
+                            required='true'
+                            type='text'
+                            className='form-control border-input'
+                            placeholder='Calle avenida, nombre de condominio...'
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.addressOne}
+                          />
+                          <ErrorValidation
+                            touched={touched.addressOne}
+                            message={errors.addressOne}
+                          />
+                        </div>
+                      </div>
+                      <div className='col-md-6 col-sm-6'>
+                        <div className='form-group'>
+                          <label htmlFor='addressTwo'>Direccion Dos</label>
+                          <input
+                            name='addressTwo'
+                            type='text'
+                            className='form-control border-input'
+                            required='true'
+                            placeholder='Número de casa, apartamento...'
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.addressTwo}
+                          />
+                          <ErrorValidation
+                            touched={touched.addressTwo}
+                            message={errors.addressTwo}
+                          />
+                        </div>
+                      </div>
+                      <div className='col-md-6 col-sm-6'>
+                        <div className='form-group'>
+                          <label htmlFor='otherSigns'>Señas adicionales</label>
+                          <input
+                            name='otherSigns'
+                            type='text'
+                            className='form-control border-input'
+                            placeholder='Señas adicionales...'
+                            required='true'
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.otherSigns}
+                          />
+                          <ErrorValidation
+                            touched={touched.otherSigns}
+                            message={errors.otherSigns}
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className='col-md-6 col-sm-6'>
-                    <div className='form-group'>
-                      <Field
-                        name='cityName'
-                        type='text'
-                        className='form-control border-input'
-                        placeholder='Ciudad, barrio, urbanización...'
-                        required
-                        component={this.renderInput}
-                        label='Ciudad'
-                      />
+                    <div className='row'>
+                      <div className='col-md-6 col-sm-6'>
+                        <div className='form-group'>
+                          <label htmlFor='countrieId'>País</label>
+                          <select
+                            className='form-control border-input'
+                            name='countrieId'
+                            required='true'
+                            component='select'
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.countrieId}
+                          >
+                            <option selected='true' disabled>
+                              País
+                            </option>
+                            {this.props.address.countriesListDTO.map((array) => (
+                              <option key={array.id} value={array.id}>
+                                {array.name}
+                              </option>
+                            ))}
+                          </select>
+                          <ErrorValidation
+                            touched={touched.countrieId}
+                            message={errors.countrieId}
+                          />
+                        </div>
+                      </div>
+                      <div className='col-md-6 col-sm-6'>
+                        <div className='form-group'>
+                          <label htmlFor='stateId'>Provincia / Estado</label>
+                          <select
+                            name='stateId'
+                            className='form-control border-input'
+                            required='true'
+                            component='select'
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.stateId}
+                          >
+                            <option selected='true' disabled>
+                              Provincia / Estado
+                            </option>
+                            {this.props.address.countriesListDTO.map((countrie) =>
+                              countrie.statesProvinces.map((city) => (
+                                <option key={city.id} value={city.id}>
+                                  {city.name}
+                                </option>
+                              ))
+                            )}
+                          </select>
+                          <ErrorValidation
+                            touched={touched.stateId}
+                            message={errors.stateId}
+                          />
+                        </div>
+                      </div>
+                      <div className='col-md-6 col-sm-6'>
+                        <div className='form-group'>
+                          <label htmlFor='cityName'>Ciudad</label>
+                          <input
+                            name='cityName'
+                            type='text'
+                            className='form-control border-input'
+                            placeholder='Ciudad, barrio, urbanización...'
+                            required='true'
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.cityName}
+                          />
+                          <ErrorValidation
+                            touched={touched.cityName}
+                            message={errors.cityName}
+                          />
+                        </div>
+                      </div>
+                      <div className='col-md-6 col-sm-6'>
+                        <div className='form-group'>
+                          <label htmlFor='zipCode'>Codigo Postal</label>
+                          <input
+                            name='zipCode'
+                            type='text'
+                            className='form-control border-input'
+                            placeholder='00000-0000'
+                            required='true'
+                            onChange={handleChange}
+                            onBlur={handleBlur}
+                            value={values.zipCode}
+                          />
+                          <ErrorValidation
+                            touched={touched.zipCode}
+                            message={errors.zipCode}
+                          />
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className='col-md-6 col-sm-6'>
-                    <div className='form-group'>
-                      <Field
-                        name='zipCode'
-                        type='text'
-                        className='form-control border-input'
-                        placeholder='00000-0000'
-                        required
-                        label='Código postal'
-                        component={this.renderInput}
-                      />
+                    <div className='text-center'>
+                      <button
+                        type='submit'
+                        className='btn btn-wd btn-danger btn-round'
+                        style={{ marginBottom: '8px' }}
+                      >
+                        AGREGAR
+                      </button>
                     </div>
-                  </div>
-                </div>
-                <div className='text-center'>
-                  <button
-                    type='submit'
-                    className='btn btn-wd btn-danger btn-round'
-                    style={{ marginBottom: '8px' }}
-                  >
-                    AGREGAR
-                  </button>
-                </div>
-              </form>
+                  </form>
+                )}
+              </Formik>
             </div>
           </div>
         </div>
@@ -201,9 +279,6 @@ const mapStateToProps = (state) => {
   return { address: state.user.userAddresses };
 };
 
-export default compose(
-  connect(mapStateToProps, { insertAddress, fetchAddresses }),
-  reduxForm({
-    form: 'createDireccion',
-  })
-)(CreateDireccion);
+export default compose(connect(mapStateToProps, { insertAddress, fetchAddresses }))(
+  CreateDireccion
+);
