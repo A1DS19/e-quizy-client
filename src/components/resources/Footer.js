@@ -19,10 +19,7 @@ function DemoFooter() {
               </ul>
             </nav>
             <div className='credits ml-auto'>
-              <span className='copyright'>
-                © {getDate()}, made with <i className='fa fa-heart heart'></i> by Alex
-                Quesada
-              </span>
+              <span className='copyright'>© {getDate()} e-quizy.com</span>
             </div>
           </div>
         </div>
