@@ -12,7 +12,7 @@ import axios from 'axios';
 export const signUp = (formValues, callback) => {
   return async (dispatch) => {
     try {
-      await axios.post('/api/accounts/create', formValues);
+      await axios.post('/api/Auth/SignUp', formValues);
       callback();
     } catch (error) {
       console.log(`ERROR AUTENTICACION:${error}`);
@@ -24,9 +24,9 @@ export const signUp = (formValues, callback) => {
 export const signIn = (formValues, callback) => {
   return async (dispatch) => {
     try {
-      const res = await axios.post('/api/accounts/login', formValues);
-      dispatch({ type: AUTH_USER, payload: res.data.token });
-      localStorage.setItem('token', res.data.token);
+      const res = await axios.post('/api/Auth/SignIn', formValues);
+      dispatch({ type: AUTH_USER, payload: res.data });
+      localStorage.setItem('token', res.data);
       callback();
     } catch (error) {
       console.log(`ERROR AUTENTICACION:${error}`);
@@ -47,7 +47,7 @@ export const signOut = (callback) => {
 //USER ACTIONS INICIO:
 export const fetchUser = () => {
   return async (dispatch) => {
-    const res = await axios.get('/api/accounts/userbytoken', {
+    const res = await axios.get('/api/Auth/userbytoken', {
       headers: {
         Authorization: localStorage.getItem('token'),
       },
@@ -64,7 +64,7 @@ export const updateImgState = (img, callback) => {
       const formdata = new FormData();
       formdata.append('img', img);
 
-      const res = await axios.post('/api/accounts/foto', formdata, {
+      const res = await axios.post('/api/Aut/foto', formdata, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
@@ -80,7 +80,7 @@ export const updateImgState = (img, callback) => {
 export const updatePersonalData = (formValues, callback) => {
   return async (dispatch) => {
     try {
-      const res = await axios.put('/api/accounts/update', formValues, {
+      const res = await axios.put('/api/Auth/update', formValues, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
@@ -99,12 +99,11 @@ export const updatePersonalData = (formValues, callback) => {
 export const fetchAddresses = () => {
   return async (dispatch) => {
     try {
-      const res = await axios.get('/api/address', {
+      const res = await axios.get('/api/Address', {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
       });
-      console.log(res.data);
       dispatch({ type: FETCH_ADDRESSES, payload: res.data });
     } catch (error) {
       console.log(error);
@@ -115,7 +114,7 @@ export const fetchAddresses = () => {
 export const insertAddress = (formValues, callback) => {
   return async (dispatch) => {
     try {
-      await axios.post('/api/address/create', formValues, {
+      await axios.post('/api/Address/Create', formValues, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
@@ -128,9 +127,9 @@ export const insertAddress = (formValues, callback) => {
 };
 
 export const deleteAddress = (id, callback) => {
-  return async (dispatch) => {
+  return async () => {
     try {
-      await axios.delete(`/api/address/${id}`);
+      await axios.delete(`/api/Address/${id}`);
       callback();
     } catch (error) {
       console.log(error);
@@ -138,13 +137,25 @@ export const deleteAddress = (id, callback) => {
   };
 };
 
-export const updateDireccion = (id, formValues, callback) => {
-  return async (dispatch) => {
+export const getDireccionId = (id, callback) => {
+  return async () => {
     try {
-      const res = await axios.put(`/api/address/${id}`, formValues);
-      console.log(res.data);
+      const res = await axios.get(`/api/Address/${id}`);
+      callback(res.data);
     } catch (error) {
       console.log(error);
     }
   };
 };
+export const updateDireccion = (id, formValues, callback) => {
+  return async () => {
+    try {
+      const res = await axios.put(`/api/Address/${id}`, formValues);
+      console.log(res.data);
+      callback();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+};
+//DIRECCIONES FIN
