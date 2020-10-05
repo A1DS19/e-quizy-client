@@ -3,6 +3,7 @@ import classnames from 'classnames';
 import { signOut, fetchUser } from '../../actions';
 import { connect } from 'react-redux';
 
+import ReactTooltip from 'react-tooltip';
 import {
   Collapse,
   Navbar,
@@ -11,10 +12,6 @@ import {
   Nav,
   NavItem,
   NavLink,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
 } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
@@ -22,11 +19,6 @@ export class IndexNavbar extends Component {
   state = {
     collapsed: true,
     navbarColor: 'navbar-transparent',
-    dropDownOpen: false,
-  };
-
-  toggleDropDown = () => {
-    this.setState({ dropDownOpen: !this.state.dropDownOpen });
   };
 
   toggleNavbar = () => {
@@ -89,33 +81,78 @@ export class IndexNavbar extends Component {
   renderNavAuth() {
     return (
       <Fragment>
-        <Dropdown
-          group
-          isOpen={this.state.dropDownOpen}
-          size='md'
-          toggle={this.toggleDropDown}
-          className='nav-item dropdown'
-        >
-          <DropdownToggle className='nav-link dropdown-toggle mr-auto mt-4' caret>
-            Pruebas
-          </DropdownToggle>
-          <DropdownMenu className='dropdown-menu dropdown-menu-right dropdown-danger'>
-            <DropdownItem className='dropdown-item' href='#'>
-              Crear
-            </DropdownItem>
-            <DropdownItem className='dropdown-item' href='#'>
-              Pruebas
-            </DropdownItem>
-            <DropdownItem className='dropdown-item' href='#'>
-              Respuestas
-            </DropdownItem>
-          </DropdownMenu>
-        </Dropdown>
+        <NavItem>
+          <NavLink data-placement='bottom'>
+            <Link to='/' style={{ color: 'gray' }}>
+              <i
+                className='fa fa-plus-square'
+                id='crearPrueba'
+                data-tip
+                data-for='crear'
+              />
+              <ReactTooltip
+                id='crear'
+                type='light'
+                place='bottom'
+                effect='solid'
+                className='font-weight-bold'
+              >
+                Crear Prueba
+              </ReactTooltip>
+              <p className='d-lg-none'>Crear Prueba</p>
+            </Link>
+          </NavLink>
+        </NavItem>
+
+        <NavItem>
+          <NavLink data-placement='bottom'>
+            <Link to='/' style={{ color: 'gray' }}>
+              <i className='fa fa-eye' id='verPrueba' data-tip data-for='ver' />
+              <ReactTooltip
+                id='ver'
+                type='light'
+                place='bottom'
+                effect='solid'
+                className='font-weight-bold'
+              >
+                Ver Pruebas
+              </ReactTooltip>
+              <p className='d-lg-none'>Ver Pruebas</p>
+            </Link>
+          </NavLink>
+        </NavItem>
+
+        <NavItem>
+          <NavLink data-placement='bottom'>
+            <Link to='/' style={{ color: 'gray' }}>
+              <i className='fa fa-file' id='verRespuestas' data-tip data-for='verRes' />
+              <ReactTooltip
+                id='verRes'
+                type='light'
+                place='bottom'
+                effect='solid'
+                className='font-weight-bold'
+              >
+                Ver Respuestas
+              </ReactTooltip>
+              <p className='d-lg-none'>Ver Respuestas</p>
+            </Link>
+          </NavLink>
+        </NavItem>
 
         <NavItem>
           <NavLink data-placement='bottom'>
             <Link to='/profile/user_profile' style={{ color: 'gray' }}>
-              <i className='fa fa-id-card-o' />
+              <i className='fa fa-id-card-o' id='miPerfil' data-tip data-for='perfil' />
+              <ReactTooltip
+                id='perfil'
+                type='light'
+                place='bottom'
+                effect='solid'
+                className='font-weight-bold'
+              >
+                Mi Perfil
+              </ReactTooltip>
               <p className='d-lg-none'>Mi Perfil</p>
             </Link>
           </NavLink>
@@ -123,7 +160,16 @@ export class IndexNavbar extends Component {
 
         <NavItem onClick={this.signOut}>
           <NavLink data-placement='bottom' href='/' style={{ color: 'gray' }}>
-            <i className='fa fa-sign-out' />
+            <i className='fa fa-sign-out' id='salir' data-tip data-for='salir' />
+            <ReactTooltip
+              id='salir'
+              type='light'
+              place='bottom'
+              effect='solid'
+              className='font-weight-bold'
+            >
+              Salir
+            </ReactTooltip>
             <p className='d-lg-none'>Salir</p>
           </NavLink>
         </NavItem>
