@@ -48,7 +48,7 @@ export class CreateDireccion extends Component {
                   addressTwo: '',
                   otherSigns: '',
                   countrieId: 1,
-                  stateId: 1,
+                  stateId: 2,
                   cityName: '',
                   zipCode: '',
                 }}
@@ -71,7 +71,6 @@ export class CreateDireccion extends Component {
                   isSubmitting,
                 }) => (
                   <form className='settings-form' onSubmit={handleSubmit}>
-                    {console.log(values)}
                     <div className='row'>
                       <div className='col-md-6 col-sm-6'>
                         <div className='form-group'>
@@ -79,7 +78,6 @@ export class CreateDireccion extends Component {
                           <br />
                           <select
                             name='typeAddressId'
-                            required='true'
                             className='form-control border-input'
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -107,7 +105,6 @@ export class CreateDireccion extends Component {
                           <label htmlFor='addressOne'>Direccion Uno</label>
                           <input
                             name='addressOne'
-                            required='true'
                             type='text'
                             className='form-control border-input'
                             placeholder='Calle avenida, nombre de condominio...'
@@ -128,7 +125,6 @@ export class CreateDireccion extends Component {
                             name='addressTwo'
                             type='text'
                             className='form-control border-input'
-                            required='true'
                             placeholder='Número de casa, apartamento...'
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -148,7 +144,6 @@ export class CreateDireccion extends Component {
                             type='text'
                             className='form-control border-input'
                             placeholder='Señas adicionales...'
-                            required='true'
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.otherSigns}
@@ -167,7 +162,6 @@ export class CreateDireccion extends Component {
                           <select
                             className='form-control border-input'
                             name='countrieId'
-                            required='true'
                             component='select'
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -194,7 +188,6 @@ export class CreateDireccion extends Component {
                           <select
                             name='stateId'
                             className='form-control border-input'
-                            required='true'
                             component='select'
                             onChange={handleChange}
                             onBlur={handleBlur}
@@ -225,7 +218,6 @@ export class CreateDireccion extends Component {
                             type='text'
                             className='form-control border-input'
                             placeholder='Ciudad, barrio, urbanización...'
-                            required='true'
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.cityName}
@@ -244,7 +236,6 @@ export class CreateDireccion extends Component {
                             type='text'
                             className='form-control border-input'
                             placeholder='00000-0000'
-                            required='true'
                             onChange={handleChange}
                             onBlur={handleBlur}
                             value={values.zipCode}
