@@ -9,6 +9,7 @@ import { fetchAddresses, deleteAddress } from '../../actions';
 export class UserDireccion extends Component {
   state = {
     render: null,
+    updateId: null,
   };
 
   componentDidUpdate() {
@@ -29,15 +30,20 @@ export class UserDireccion extends Component {
     });
   };
 
-  onClickCreate = () => {
-    return <CreateDireccion history={this.props.history} onClose={this.onClose} />;
+  onClickUpdate = () => {
+    if (this.state.updateId !== null) {
+      return (
+        <UpdateDireccion
+          id={this.state.updateId}
+          history={this.props.history}
+          onClose={this.onClose}
+        />
+      );
+    }
   };
 
-  onClickUpdate = (id) => {
-    console.log(id);
-    return (
-      <UpdateDireccion id={id} history={this.props.history} onClose={this.onClose} />
-    );
+  onClickCreate = () => {
+    return <CreateDireccion history={this.props.history} onClose={this.onClose} />;
   };
 
   onClickDelete = (id) => {
@@ -104,7 +110,9 @@ export class UserDireccion extends Component {
       <div className='text-center'>
         <i
           className='fa fa-pencil-square-o text-danger'
-          onClick={() => this.onClickUpdate(id, this.setState({ render: 'UPDATE' }))}
+          onClick={() =>
+            this.onClickUpdate(this.setState({ updateId: id, render: 'UPDATE' }))
+          }
         />
         <i
           className='fa fa-trash ml-2 text-danger'
@@ -115,7 +123,6 @@ export class UserDireccion extends Component {
   };
 
   render() {
-    console.log(this.props.address);
     return <Fragment>{this.decideRender()}</Fragment>;
   }
 }
