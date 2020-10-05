@@ -54,8 +54,8 @@ export class Register extends Component {
                     <br />
                     <Field name='roleName' component='select' className='form-control'>
                       <option disabled={true} defaultChecked={true}></option>
-                      <option value='Professor'>Profesor</option>
-                      <option value='Student'>Estudiante</option>
+                      <option value='PROFESOR'>Profesor</option>
+                      <option value='ESTUDIANTE'>Estudiante</option>
                     </Field>
 
                     <Field
