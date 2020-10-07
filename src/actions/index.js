@@ -1,11 +1,4 @@
-import {
-  AUTH_ERROR,
-  AUTH_USER,
-  FETCH_USER,
-  FETCH_ADDRESSES,
-  REMOVE_ADDRESSES,
-  ADD_ADDRESS,
-} from './types';
+import { AUTH_ERROR, AUTH_USER, FETCH_USER, FETCH_ADDRESSES } from './types';
 import axios from 'axios';
 
 //AUTH ACTIONS INICIO:
@@ -15,8 +8,7 @@ export const signUp = (formValues, callback) => {
       await axios.post('/api/Auth/SignUp', formValues);
       callback();
     } catch (error) {
-      console.log(`ERROR AUTENTICACION:${error}`);
-      dispatch({ type: AUTH_ERROR, payload: error });
+      dispatch({ type: AUTH_ERROR, payload: error.response.data.detail });
     }
   };
 };
@@ -29,8 +21,7 @@ export const signIn = (formValues, callback) => {
       localStorage.setItem('token', res.data);
       callback();
     } catch (error) {
-      console.log(`ERROR AUTENTICACION:${error}`);
-      dispatch({ type: AUTH_ERROR, payload: error });
+      dispatch({ type: AUTH_ERROR, payload: error.response.data });
     }
   };
 };
