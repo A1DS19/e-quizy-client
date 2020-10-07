@@ -5,6 +5,7 @@ import { fetchUser, fetchAddresses } from '../../actions';
 
 import DatosPersonales from './DatosPersonales';
 import UserDireccion from './UserDireccion';
+import requireAuth from '../../middlewares/requireAuth';
 
 export class UserProfileSettings extends Component {
   componentDidMount() {
@@ -88,5 +89,5 @@ const mapStateToProps = (state) => {
   return { user: state.user.currentUser };
 };
 export default connect(mapStateToProps, { fetchUser, fetchAddresses })(
-  UserProfileSettings
+  requireAuth(UserProfileSettings)
 );
