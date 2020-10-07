@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import { updateImgState, updatePersonalData, fetchUser } from '../../actions';
+import * as emailValidate from 'email-validator';
 
 export class DatosPersonales extends Component {
   state = {
@@ -223,6 +224,46 @@ export class DatosPersonales extends Component {
     );
   }
 }
+
+const validate = (formValues) => {
+  const {
+    firstName,
+    secondName,
+    lastName,
+    secondLastName,
+    email,
+    telephone,
+    dateOfBirth,
+  } = formValues;
+  let errors = {};
+
+  if (!firstName) {
+    errors.firstName = 'Debe agregar su primer nombre';
+  }
+  if (!secondName) {
+    errors.secondName = 'Debe agregar su segundo nombre';
+  }
+  if (!lastName) {
+    errors.lastName = 'Debe agregar su primer apellido';
+  }
+  if (!secondLastName) {
+    errors.secondLastName = 'Debe agregar su segundo apellido';
+  }
+  if (!email) {
+    errors.email = 'Debe agregar su email';
+  }
+  if (email && !emailValidate.validate(email)) {
+    errors.email = 'Porfavor ingrese un email correcto';
+  }
+  if (!telephone) {
+    errors.telephone = 'Debe agregar su telefono';
+  }
+  if (!dateOfBirth) {
+    errors.dateOfBirth = 'Debe agregar su fecha de nacimiento';
+  }
+  return errors;
+};
+
 const mapStateToProps = (state) => {
   return {
     user: state.user.currentUser,
@@ -241,6 +282,7 @@ const mapStateToProps = (state) => {
 export default compose(
   connect(mapStateToProps, { updateImgState, updatePersonalData, fetchUser }),
   reduxForm({
+    validate,
     form: 'updateProfile',
     enableReinitialize: true,
   })
