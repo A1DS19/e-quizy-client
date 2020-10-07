@@ -5,6 +5,7 @@ import { reduxForm, Field } from 'redux-form';
 import * as emailValidate from 'email-validator';
 import { connect } from 'react-redux';
 import { signUp } from '../../actions';
+import stringLength from 'string-length';
 
 export class Register extends Component {
   onSubmit = (formValues) => {
@@ -45,7 +46,9 @@ export class Register extends Component {
               <Col className='ml-auto mr-auto' lg='4'>
                 <Card className='card-register ml-auto mr-auto'>
                   <h3 className='title mx-auto'>Registrese</h3>
-
+                  {this.props.errorMessage ? (
+                    <Alert color='danger'>{this.props.errorMessage}</Alert>
+                  ) : null}
                   <Form
                     className='register-form'
                     onSubmit={this.props.handleSubmit(this.onSubmit)}
@@ -113,7 +116,7 @@ export class Register extends Component {
   }
 }
 
-const validate = (formValues) => {
+const validate = (formValues, props) => {
   const { email, password, confirmPassword, roleName, firstName, lastName } = formValues;
   const errors = {};
 
@@ -138,15 +141,18 @@ const validate = (formValues) => {
   if (!confirmPassword) {
     errors.confirmPassword = 'Debe confirmar la contrasena';
   }
-  if (password !== confirmPassword) {
+  if (confirmPassword !== password) {
     errors.confirmPassword = 'Las contrasenas deben ser iguales';
-    errors.password = 'Las contrasenas deben ser iguales';
   }
   return errors;
 };
 
+const mapStateToProps = (state) => {
+  return { errorMessage: state.auth.errorMessage };
+};
+
 export default compose(
-  connect(null, { signUp }),
+  connect(mapStateToProps, { signUp }),
   reduxForm({
     validate,
     form: 'registerForm',
