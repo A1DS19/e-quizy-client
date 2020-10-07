@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { fetchUser } from '../../actions';
+import requireAuth from '../../middlewares/requireAuth';
 
 export class UserProfile extends Component {
   componentDidMount() {
@@ -87,4 +88,4 @@ export class UserProfile extends Component {
 const mapStateToProps = (state) => {
   return { user: state.user.currentUser };
 };
-export default connect(mapStateToProps, { fetchUser })(UserProfile);
+export default connect(mapStateToProps, { fetchUser })(requireAuth(UserProfile));
