@@ -44,7 +44,9 @@ export class Login extends Component {
               <Col className='ml-auto mr-auto' lg='4'>
                 <Card className='card-register ml-auto mr-auto'>
                   <h3 className='title mx-auto'>Login</h3>
-
+                  {this.props.errorMessage ? (
+                    <Alert color='danger'>{this.props.errorMessage}</Alert>
+                  ) : null}
                   <Form
                     className='register-form'
                     onSubmit={this.props.handleSubmit(this.onSubmit)}
@@ -96,8 +98,12 @@ const validate = (formValues) => {
   return errors;
 };
 
+const mapStateToProps = (state) => {
+  return { errorMessage: state.auth.errorMessage };
+};
+
 export default compose(
-  connect(null, { signIn }),
+  connect(mapStateToProps, { signIn }),
   reduxForm({
     validate,
     form: 'login',
