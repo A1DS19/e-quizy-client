@@ -271,7 +271,7 @@ export class UpdateDireccion extends Component {
                   )}
                 </Formik>
               ) : (
-                'Loading'
+                <h3>Cargando datos...</h3>
               )}
             </div>
           </div>
