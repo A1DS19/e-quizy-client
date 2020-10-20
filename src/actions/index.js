@@ -55,7 +55,7 @@ export const updateImgState = (img, callback) => {
       const formdata = new FormData();
       formdata.append('img', img);
 
-      const res = await axios.post('/api/Aut/foto', formdata, {
+      const res = await axios.post('/api/Auth/foto', formdata, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
