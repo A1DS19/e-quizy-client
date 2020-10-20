@@ -109,7 +109,7 @@ export class IndexNavbar extends Component {
       <Fragment>
         <NavItem>
           <NavLink data-placement='bottom'>
-            <Link to='/' style={{ color: 'gray' }}>
+            <Link to='/quizes/new_quiz' style={{ color: 'gray' }}>
               <i
                 className='fa fa-plus-square'
                 id='crearPrueba'
@@ -125,7 +125,7 @@ export class IndexNavbar extends Component {
 
         <NavItem>
           <NavLink data-placement='bottom'>
-            <Link to='/' style={{ color: 'gray' }}>
+            <Link to='/quizes/list_quizes' style={{ color: 'gray' }}>
               <i className='fa fa-eye' id='verPrueba' data-tip data-for='ver' />
 
               {this.renderTooltip('ver', 'Ver Pruebas')}
