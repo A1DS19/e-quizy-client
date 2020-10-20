@@ -25,6 +25,7 @@ export class Landing extends Component {
             </div>
           </div>
         </div>
+
         <div className='section section-dark section-summary'>
           <div className='container'>
             <div className='row'>
