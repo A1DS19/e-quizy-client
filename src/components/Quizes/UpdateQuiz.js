@@ -19,6 +19,22 @@ export class UpdateQuiz extends Component {
   render() {
     return (
       <Fragment>
+        <div className='page-header'>
+          <div
+            className='page-header section-dark'
+            style={{
+              backgroundImage: `url(${require('../../assets/img/sections/uriel-soberanes.jpg')})`,
+            }}
+          >
+            <div className='filter'></div>
+            <div className='content-center'>
+              <div className='motto'>
+                <h1 className='title-uppercase text-center'>Editar quiz</h1>
+                <br />
+              </div>
+            </div>
+          </div>
+        </div>
         <div className='wrapper'>
           <div className='main'>
             <div className='section section-gray'>
