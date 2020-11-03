@@ -22,17 +22,17 @@ export class ListQuizes extends Component {
             </div>
           </div>
         </div>
-        <div class='wrapper'>
-          <div class='main'>
-            <div class='section section-gray'>
-              <div class='container'>
-                <div class='row'>
-                  <div class='col-md-6 ml-auto mr-auto text-center title'>
+        <div className='wrapper'>
+          <div className='main'>
+            <div className='section section-gray'>
+              <div className='container'>
+                <div className='row'>
+                  <div className='col-md-6 ml-auto mr-auto text-center title'>
                     <h2>Pruebas</h2>
                   </div>
                 </div>
-                <div class='article'>
-                  <div class='row' style={{ position: 'relative' }}>
+                <div className='article'>
+                  <div className='row' style={{ position: 'relative' }}>
                     {/* <evaluation
               *ngFor="let eval of evaluations"
               [eval]="eval"

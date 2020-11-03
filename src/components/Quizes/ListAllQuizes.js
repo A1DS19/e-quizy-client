@@ -16,22 +16,22 @@ export class ListAllQuizes extends Component {
             }}
           >
             <i
-              class='fa fa-trash-o ml-4 mt-1 text-danger mr-3 mt-2'
+              className='fa fa-trash-o ml-4 mt-1 text-danger mr-3 mt-2'
               aria-hidden='true'
               style={{ float: 'right' }}
             ></i>
           </div>
 
-          <div class='text-center'></div>
+          <div className='text-center'></div>
 
-          <div class='card-body'>
-            <h4 class='card-title'>
+          <div className='card-body'>
+            <h4 className='card-title'>
               TITULO
               {/* {{
           eval.name.length > 20 ? (eval.name | slice: 0:20) + "..." : eval.name
         }} */}
             </h4>
-            <p class='card-text'>
+            <p className='card-text'>
               DESCRIPCCION
               {/* {{
           eval.description.length > 68
@@ -41,7 +41,7 @@ export class ListAllQuizes extends Component {
             </p>
 
             <div
-              class='row'
+              className='row'
               style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
             >
               <Link

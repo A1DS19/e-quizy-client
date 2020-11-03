@@ -69,9 +69,7 @@ export class Login extends Component {
                     </Button>
                   </Form>
                   <div className='forgot'>
-                    <a href='#' style={{ color: 'white' }}>
-                      Olvido su contrasena?
-                    </a>
+                    <p style={{ color: 'white' }}>Olvido su contrasena?</p>
                   </div>
                 </Card>
               </Col>
