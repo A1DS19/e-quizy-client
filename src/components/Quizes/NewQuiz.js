@@ -18,9 +18,9 @@ export class NewQuiz extends Component {
 
   validationSchema = Yup.object().shape({
     name: Yup.string().required('Debe agregar el nombre de la evaluacion'),
-    categoryEvaluation: '',
-    topicEvaluation: '',
-    typeEvaluation: '',
+    categoryEvaluationId: Yup.string().required('Debe agregar la categoria de la prueba'),
+    topicEvaluationId: Yup.string().required('Debe agregar la materia de la prueba'),
+    typeEvaluationId: Yup.string().required('Debe agregar el tipo de evaluacion'),
     description: Yup.string().required('Debe agregar la decripccion de la evaluacion'),
     rules: Yup.string().required('Debe agregar las reglas de la evaluacion'),
   });
@@ -64,9 +64,9 @@ export class NewQuiz extends Component {
                     <Formik
                       initialValues={{
                         name: '',
-                        categoryEvaluationId: 1,
-                        topicEvaluationId: 1,
-                        typeEvaluationId: 1,
+                        categoryEvaluationId: '',
+                        topicEvaluationId: '',
+                        typeEvaluationId: '',
                         description: '',
                         rules: '',
                       }}
@@ -118,12 +118,12 @@ export class NewQuiz extends Component {
                                 Categoría
                               </label>
                               <select
-                                name='categoryEvaluation'
+                                name='categoryEvaluationId'
                                 className='form-control'
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                               >
-                                <option defaultValue='0' disabled={true}>
+                                <option selected={true} disabled>
                                   Selecciona una categoría...
                                 </option>
                                 {this.props.evalType.categoriesEvaluation &&
@@ -135,20 +135,20 @@ export class NewQuiz extends Component {
                               </select>
                               {
                                 <ErrorValidation
-                                  touched={touched.categoryEvaluation}
-                                  message={errors.categoryEvaluation}
+                                  touched={touched.categoryEvaluationId}
+                                  message={errors.categoryEvaluationId}
                                 />
                               }
                             </div>
                             <div className='col-md-4 form-group'>
                               <label htmlFor='exampleFormControlSelect1'> Materia</label>
                               <select
-                                name='topicEvaluation'
+                                name='topicEvaluationId'
                                 className='form-control'
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                               >
-                                <option defaultValue='0' disabled={true}>
+                                <option selected={true} disabled>
                                   Selecciona una materia...
                                 </option>
 
@@ -161,8 +161,8 @@ export class NewQuiz extends Component {
                               </select>
                               {
                                 <ErrorValidation
-                                  touched={touched.topicEvaluation}
-                                  message={errors.topicEvaluation}
+                                  touched={touched.topicEvaluationId}
+                                  message={errors.topicEvaluationId}
                                 />
                               }
                             </div>
@@ -171,12 +171,12 @@ export class NewQuiz extends Component {
                                 Tipo de evaluacion
                               </label>
                               <select
-                                name='typeEvaluation'
+                                name='typeEvaluationId'
                                 className='form-control'
                                 onChange={handleChange}
                                 onBlur={handleBlur}
                               >
-                                <option defaultValue='0' disabled={true}>
+                                <option selected={true} disabled>
                                   Selecciona un tipo de evaluacion...
                                 </option>
 
@@ -189,8 +189,8 @@ export class NewQuiz extends Component {
                               </select>
                               {
                                 <ErrorValidation
-                                  touched={touched.typeEvaluation}
-                                  message={errors.topicEvaluation}
+                                  touched={touched.typeEvaluationId}
+                                  message={errors.topicEvaluationId}
                                 />
                               }
                             </div>
