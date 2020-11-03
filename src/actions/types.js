@@ -4,3 +4,6 @@ export const FETCH_USER = 'FETCH_USER';
 export const FETCH_ADDRESSES = 'FETCH_ADDRESSES';
 export const REMOVE_ADDRESSES = 'REMOVE_ADDRESSES';
 export const ADD_ADDRESS = 'ADD_ADDRESS';
+export const FETCH_EVALS_TYPES = 'FETCH_EVALS_TYPES';
+export const FETCH_EVALS = 'FETCH_EVALS';
+export const EVALS_ERROR = 'EVALS_ERROR';

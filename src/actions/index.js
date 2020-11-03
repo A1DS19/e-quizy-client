@@ -1,4 +1,12 @@
-import { AUTH_ERROR, AUTH_USER, FETCH_USER, FETCH_ADDRESSES } from './types';
+import {
+  AUTH_ERROR,
+  AUTH_USER,
+  FETCH_USER,
+  FETCH_ADDRESSES,
+  FETCH_EVALS_TYPES,
+  FETCH_EVALS,
+  EVALS_ERROR,
+} from './types';
 import axios from 'axios';
 
 //AUTH ACTIONS INICIO:
@@ -43,7 +51,6 @@ export const fetchUser = () => {
         Authorization: localStorage.getItem('token'),
       },
     });
-    console.log(res.data);
     res.data.dateOfBirth = JSON.stringify(res.data.dateOfBirth).slice(1, 11);
     dispatch({ type: FETCH_USER, payload: res.data });
   };
@@ -142,7 +149,6 @@ export const updateDireccion = (id, formValues, callback) => {
   return async () => {
     try {
       const res = await axios.put(`/api/Address/${id}`, formValues);
-      console.log(res.data);
       callback();
     } catch (error) {
       console.log(error);
@@ -150,3 +156,34 @@ export const updateDireccion = (id, formValues, callback) => {
   };
 };
 //DIRECCIONES FIN
+
+//EVALUACIONES INICIO
+export const fetchEvaluacionesTypes = () => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.get('/api/Evaluation/data', {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      dispatch({ type: FETCH_EVALS_TYPES, payload: res.data });
+    } catch (err) {
+      dispatch({ type: EVALS_ERROR, payload: err.response.data });
+    }
+  };
+};
+export const addEval = (formvalues, callback) => {
+  return async (dispatch) => {
+    try {
+      const res = await axios.post('/api/Evaluation/create', formvalues, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      dispatch({ type: FETCH_EVALS, payload: res.data });
+      callback();
+    } catch (err) {
+      dispatch({ type: EVALS_ERROR, payload: err.response.data });
+    }
+  };
+};
