@@ -5,6 +5,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import ErrorValidation from '../resources/ErrorValidation';
 import requireAuth from '../../middlewares/requireAuth';
+import { fetchEvaluacionesTypes, addEval } from '../../actions/index';
 
 export class NewQuiz extends Component {
   state = {
@@ -23,6 +24,10 @@ export class NewQuiz extends Component {
     description: Yup.string().required('Debe agregar la decripccion de la evaluacion'),
     rules: Yup.string().required('Debe agregar las reglas de la evaluacion'),
   });
+
+  componentDidMount() {
+    this.props.fetchEvaluacionesTypes();
+  }
 
   render() {
     return (
@@ -59,16 +64,18 @@ export class NewQuiz extends Component {
                     <Formik
                       initialValues={{
                         name: '',
-                        categoryEvaluation: 0,
-                        topicEvaluation: 0,
-                        typeEvaluation: 0,
+                        categoryEvaluationId: 1,
+                        topicEvaluationId: 1,
+                        typeEvaluationId: 1,
                         description: '',
                         rules: '',
                       }}
                       validationSchema={this.validationSchema}
                       onSubmit={(values, { setSubmitting, resetForm }) => {
                         setSubmitting(true);
-                        console.log(values);
+                        this.props.addEval(values, () => {
+                          this.props.history.push('/quizes/list_quizes');
+                        });
                         setSubmitting(false);
                       }}
                     >
@@ -119,7 +126,12 @@ export class NewQuiz extends Component {
                                 <option defaultValue='0' disabled={true}>
                                   Selecciona una categoría...
                                 </option>
-                                <option value='{{ cat.id }}'>{'{ cat.category }'}</option>
+                                {this.props.evalType.categoriesEvaluation &&
+                                  this.props.evalType.categoriesEvaluation.map((cat) => (
+                                    <option key={cat.id} value={cat.id}>
+                                      {cat.category}
+                                    </option>
+                                  ))}
                               </select>
                               {
                                 <ErrorValidation
@@ -139,9 +151,13 @@ export class NewQuiz extends Component {
                                 <option defaultValue='0' disabled={true}>
                                   Selecciona una materia...
                                 </option>
-                                <option value='{{ topic.id }}'>
-                                  {'{ topic.topic }'}
-                                </option>
+
+                                {this.props.evalType.topicsEvaluation &&
+                                  this.props.evalType.topicsEvaluation.map((topic) => (
+                                    <option key={topic.id} value={topic.id}>
+                                      {topic.topic}
+                                    </option>
+                                  ))}
                               </select>
                               {
                                 <ErrorValidation
@@ -163,7 +179,13 @@ export class NewQuiz extends Component {
                                 <option defaultValue='0' disabled={true}>
                                   Selecciona un tipo de evaluacion...
                                 </option>
-                                <option value='{{ type.id }}'>{'type.type'}</option>
+
+                                {this.props.evalType.typesEvaluation &&
+                                  this.props.evalType.typesEvaluation.map((type) => (
+                                    <option key={type.id} value={type.id}>
+                                      {type.type}
+                                    </option>
+                                  ))}
                               </select>
                               {
                                 <ErrorValidation
@@ -232,4 +254,10 @@ export class NewQuiz extends Component {
   }
 }
 
-export default requireAuth(NewQuiz);
+const mapStateToProps = (state) => {
+  return { evalType: state.evals.evalTypes };
+};
+
+export default compose(connect(mapStateToProps, { fetchEvaluacionesTypes, addEval }))(
+  requireAuth(NewQuiz)
+);
