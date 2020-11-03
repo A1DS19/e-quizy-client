@@ -148,7 +148,7 @@ export const getDireccionId = (id, callback) => {
 export const updateDireccion = (id, formValues, callback) => {
   return async () => {
     try {
-      const res = await axios.put(`/api/Address/${id}`, formValues);
+      await axios.put(`/api/Address/${id}`, formValues);
       callback();
     } catch (error) {
       console.log(error);
@@ -180,6 +180,7 @@ export const addEval = (formvalues, callback) => {
           Authorization: localStorage.getItem('token'),
         },
       });
+      console.log(res.data);
       dispatch({ type: FETCH_EVALS, payload: res.data });
       callback();
     } catch (err) {
