@@ -59,8 +59,10 @@ export class UpdateQuiz extends Component {
                         }}
                         validationSchema={quizSchema}
                         onSubmit={(values, { setSubmitting, resetForm }) => {
+                          values.Id = this.props.match.params.id;
+                          console.log(values);
+                          setSubmitting(true);
                           this.props.updateEval(values, () => {
-                            setSubmitting(true);
                             setSubmitting(false);
                             this.props.history.push('/quizes/list_quizes');
                           });
