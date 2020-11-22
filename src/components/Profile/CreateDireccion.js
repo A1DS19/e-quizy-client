@@ -5,6 +5,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import ErrorValidation from '../resources/ErrorValidation';
 import { insertAddress, fetchAddresses } from '../../actions';
+import { toast } from 'react-toastify';
 
 export class CreateDireccion extends Component {
   validationSchema = Yup.object().shape({
@@ -57,6 +58,7 @@ export class CreateDireccion extends Component {
                   setSubmitting(true);
                   this.props.insertAddress(values, () => {
                     this.props.onClose();
+                    toast.warning('DIRECCION CREADA CON EXITO');
                   });
                   setSubmitting(false);
                 }}

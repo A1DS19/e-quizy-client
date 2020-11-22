@@ -6,6 +6,9 @@ import {
   FETCH_EVALS_TYPES,
   FETCH_EVALS,
   EVALS_ERROR,
+  LOADING_QUIZES,
+  FECTH_QUIZES,
+  FETCH_SELECTED_QUIZ,
 } from './types';
 import axios from 'axios';
 
@@ -185,6 +188,67 @@ export const addEval = (formvalues, callback) => {
       callback();
     } catch (err) {
       dispatch({ type: EVALS_ERROR, payload: err.response.data });
+    }
+  };
+};
+export const fetchEvals = () => {
+  return async (dispatch) => {
+    try {
+      dispatch({ type: LOADING_QUIZES });
+      const { data } = await axios.get(`/api/Evaluation/evals`, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      dispatch({ type: FECTH_QUIZES, payload: data.evaluations });
+    } catch (error) {
+      dispatch({ type: EVALS_ERROR, payload: error.response.data });
+    }
+  };
+};
+
+export const deleteQuiz = (id, callback) => {
+  return async (dispatch) => {
+    try {
+      await axios.delete(`/api/Evaluation/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      callback();
+    } catch (error) {
+      dispatch({ type: EVALS_ERROR, payload: error.response.data });
+    }
+  };
+};
+
+export const fetchEval = (id, callback) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await axios.get(`/api/Evaluation/${id}`, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      dispatch({ type: FETCH_SELECTED_QUIZ, payload: data });
+      callback();
+    } catch (error) {
+      dispatch({ type: EVALS_ERROR, payload: error.response.data });
+    }
+  };
+};
+
+export const updateEval = (formvalues, callback) => {
+  return async (dispatch) => {
+    try {
+      await axios.put(`/api/Evaluation/update`, formvalues, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      callback();
+    } catch (error) {
+      dispatch({ type: EVALS_ERROR, payload: error.response.data });
     }
   };
 };

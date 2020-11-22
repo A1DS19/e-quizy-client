@@ -1,16 +1,31 @@
-import { FETCH_EVALS_TYPES, EVALS_ERROR } from '../actions/types';
+import {
+  FETCH_EVALS_TYPES,
+  EVALS_ERROR,
+  LOADING_QUIZES,
+  FECTH_QUIZES,
+  FETCH_SELECTED_QUIZ,
+} from '../actions/types';
 
 const initialState = {
+  loading: true,
+  evalsList: [],
   evalTypes: [],
+  eval: {},
   errorMessage: '',
 };
 
 export default (state = initialState, action) => {
   switch (action.type) {
+    case LOADING_QUIZES:
+      return { loading: true };
+    case FETCH_SELECTED_QUIZ:
+      return { ...state, loading: false, eval: action.payload };
+    case FECTH_QUIZES:
+      return { ...state, loading: false, evalsList: action.payload };
     case FETCH_EVALS_TYPES:
-      return { ...state, evalTypes: action.payload };
+      return { ...state, loading: false, evalTypes: action.payload };
     case EVALS_ERROR:
-      return { ...state, errorMessage: action.payload };
+      return { ...state, loading: false, errorMessage: action.payload };
     default:
       return state;
   }

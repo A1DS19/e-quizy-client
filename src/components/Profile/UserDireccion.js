@@ -5,6 +5,7 @@ import { Table } from 'reactstrap';
 import UpdateDireccion from './UpdateDireccion';
 import CreateDireccion from './CreateDireccion';
 import { fetchAddresses, deleteAddress } from '../../actions';
+import { toast } from 'react-toastify';
 
 export class UserDireccion extends Component {
   state = {
@@ -48,8 +49,8 @@ export class UserDireccion extends Component {
 
   onClickDelete = (id) => {
     this.props.deleteAddress(id, () => {
-      alert('Direccion Borrada con exito');
       this.props.fetchAddresses();
+      toast.error('DIRECCION ElIMINADA CON EXITO');
     });
   };
 

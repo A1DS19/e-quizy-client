@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import ErrorValidation from '../resources/ErrorValidation';
 import requireAuth from '../../middlewares/requireAuth';
 import { fetchEvaluacionesTypes, addEval } from '../../actions/index';
+import { toast } from 'react-toastify';
 
 export class NewQuiz extends Component {
   state = {
@@ -74,6 +75,7 @@ export class NewQuiz extends Component {
                       onSubmit={(values, { setSubmitting, resetForm }) => {
                         setSubmitting(true);
                         this.props.addEval(values, () => {
+                          toast.warning('EVALUACION CREADA CON EXITO');
                           this.props.history.push('/quizes/list_quizes');
                         });
                         setSubmitting(false);
@@ -126,8 +128,8 @@ export class NewQuiz extends Component {
                                 <option selected={true} disabled>
                                   Selecciona una categoría...
                                 </option>
-                                {this.props.evalType.categoriesEvaluation &&
-                                  this.props.evalType.categoriesEvaluation.map((cat) => (
+                                {this.props.evalType?.categoriesEvaluation &&
+                                  this.props.evalType?.categoriesEvaluation.map((cat) => (
                                     <option key={cat.id} value={cat.id}>
                                       {cat.category}
                                     </option>
@@ -152,8 +154,8 @@ export class NewQuiz extends Component {
                                   Selecciona una materia...
                                 </option>
 
-                                {this.props.evalType.topicsEvaluation &&
-                                  this.props.evalType.topicsEvaluation.map((topic) => (
+                                {this.props.evalType?.topicsEvaluation &&
+                                  this.props.evalType?.topicsEvaluation.map((topic) => (
                                     <option key={topic.id} value={topic.id}>
                                       {topic.topic}
                                     </option>
@@ -180,8 +182,8 @@ export class NewQuiz extends Component {
                                   Selecciona un tipo de evaluacion...
                                 </option>
 
-                                {this.props.evalType.typesEvaluation &&
-                                  this.props.evalType.typesEvaluation.map((type) => (
+                                {this.props.evalType?.typesEvaluation &&
+                                  this.props.evalType?.typesEvaluation.map((type) => (
                                     <option key={type.id} value={type.id}>
                                       {type.type}
                                     </option>

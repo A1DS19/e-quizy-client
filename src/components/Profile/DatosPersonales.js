@@ -6,6 +6,7 @@ import { compose } from 'redux';
 import { reduxForm, Field } from 'redux-form';
 import { updateImgState, updatePersonalData, fetchUser } from '../../actions';
 import * as emailValidate from 'email-validator';
+import { toast } from 'react-toastify';
 
 export class DatosPersonales extends Component {
   state = {
@@ -27,6 +28,7 @@ export class DatosPersonales extends Component {
     console.log(newFormValues);
     this.props.updatePersonalData(newFormValues, () => {
       this.props.history.push('/profile/user_profile');
+      toast.warning('DATOS ACTUALIZADOS CON EXITO');
     });
   };
   renderError({ error, touched }) {

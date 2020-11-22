@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // components
 import Landing from './Landing';
@@ -21,6 +23,7 @@ export class App extends Component {
   render() {
     return (
       <BrowserRouter>
+        <ToastContainer />
         <NavbarIndex />
         <Switch>
           <Route exact path='/' component={Landing} />
@@ -34,7 +37,7 @@ export class App extends Component {
           />
           <Route exact path='/quizes/new_quiz' component={NewQuiz} />
           <Route exact path='/quizes/list_quizes' component={ListQuizes} />
-          <Route exact path='/quizes/update_quiz' component={UpdateQuiz} />
+          <Route exact path='/quizes/update_quiz/:id' component={UpdateQuiz} />
 
           {/* Componente not found debe ir de ultimo */}
           <Route exact path='*' component={NotFound} />

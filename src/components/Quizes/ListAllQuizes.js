@@ -1,10 +1,30 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { Link } from 'react-router-dom';
+import requireAuth from '../../middlewares/requireAuth';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { fetchEvals, deleteQuiz } from '../../actions/index';
+import Loader from '../resources/Loader';
+import { toast } from 'react-toastify';
 
 export class ListAllQuizes extends Component {
-  render() {
-    return (
-      <div className='col-md-4'>
+  componentDidMount() {
+    this.props.fetchEvals();
+  }
+
+  deleteQuizHandler = (id) => {
+    this.props.deleteQuiz(id, () => {
+      this.props.fetchEvals();
+      toast.success('PRUEBA ELIMINADA');
+    });
+  };
+
+  fetchQuizez = () => {
+    if (!this.props.evals) {
+      return <Loader />;
+    }
+    return this.props.evals.map((test) => (
+      <div className='col-md-4' key={test.id}>
         <div className='card' style={{ width: '20rem' }}>
           <div
             className='card-img-top'
@@ -16,36 +36,29 @@ export class ListAllQuizes extends Component {
             }}
           >
             <i
+              onClick={() => this.deleteQuizHandler(test.id)}
               className='fa fa-trash-o ml-4 mt-1 text-danger mr-3 mt-2'
               aria-hidden='true'
               style={{ float: 'right' }}
-            ></i>
+            />
           </div>
 
           <div className='text-center'></div>
 
           <div className='card-body'>
-            <h4 className='card-title'>
-              TITULO
-              {/* {{
-          eval.name.length > 20 ? (eval.name | slice: 0:20) + "..." : eval.name
-        }} */}
-            </h4>
-            <p className='card-text'>
-              DESCRIPCCION
-              {/* {{
-          eval.description.length > 68
-            ? (eval.description | slice: 0:68) + "..."
-            : eval.description
-        }} */}
-            </p>
+            <h4 className='card-title'>{test.name}</h4>
+            <p className='card-text'>{test.description}</p>
 
             <div
               className='row'
-              style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
             >
               <Link
-                to='/quizes/update_quiz'
+                to={`/quizes/update_quiz/${test.id}`}
                 className='btn btn-primary'
                 style={{ color: 'white' }}
               >
@@ -59,8 +72,17 @@ export class ListAllQuizes extends Component {
           </div>
         </div>
       </div>
-    );
+    ));
+  };
+
+  render() {
+    return <Fragment>{this.fetchQuizez()}</Fragment>;
   }
 }
-
-export default ListAllQuizes;
+const mapStateToProps = ({ evals }) => {
+  console.log(evals);
+  return { evals: evals.evalsList };
+};
+export default compose(connect(mapStateToProps, { fetchEvals, deleteQuiz }))(
+  requireAuth(ListAllQuizes)
+);

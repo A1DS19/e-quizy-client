@@ -7,3 +7,8 @@ export const ADD_ADDRESS = 'ADD_ADDRESS';
 export const FETCH_EVALS_TYPES = 'FETCH_EVALS_TYPES';
 export const FETCH_EVALS = 'FETCH_EVALS';
 export const EVALS_ERROR = 'EVALS_ERROR';
+
+export const LOADING_QUIZES = 'LOADING_QUIZES';
+export const FECTH_QUIZES = 'FECTH_QUIZES';
+export const FETCH_SELECTED_QUIZ = 'FETCH_SELECTED_QUIZ';
+export const QUIZ_ERROR = 'QUIZ_ERROR';

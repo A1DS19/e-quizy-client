@@ -2,20 +2,21 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Formik } from 'formik';
-import * as Yup from 'yup';
 import ErrorValidation from '../resources/ErrorValidation';
 import requireAuth from '../../middlewares/requireAuth';
-
+import { fetchEvaluacionesTypes, fetchEval, updateEval } from '../../actions/index';
+import { quizSchema } from './quizValidation';
+import Loader from '../resources/Loader';
 export class UpdateQuiz extends Component {
-  validationSchema = Yup.object().shape({
-    name: Yup.string().required('Debe agregar el nombre de la evaluacion'),
-    categoryEvaluation: '',
-    topicEvaluation: '',
-    typeEvaluation: '',
-    description: Yup.string().required('Debe agregar la decripccion de la evaluacion'),
-    rules: Yup.string().required('Debe agregar las reglas de la evaluacion'),
-  });
-
+  state = {
+    eval: {},
+  };
+  componentDidMount() {
+    this.props.fetchEvaluacionesTypes();
+    this.props.fetchEval(this.props.match.params.id, () => {
+      this.setState({ eval: this.props.eval });
+    });
+  }
   render() {
     return (
       <Fragment>
@@ -45,20 +46,24 @@ export class UpdateQuiz extends Component {
                   </div>
                   <div className='row'>
                     <div className='col-md-12 ml-auto mr-auto title'>
+                      {console.log(this.state.eval)}
                       <Formik
+                        enableReinitialize
                         initialValues={{
-                          name: 'valor inicial',
-                          categoryEvaluation: 0,
-                          topicEvaluation: 0,
-                          typeEvaluation: 0,
-                          description: 'valor inicial',
-                          rules: 'valor inicial',
+                          name: this.state.eval?.name,
+                          categoryEvaluationId: this.state.eval?.categoryEvaluationId,
+                          topicEvaluationId: this.state.eval?.topicEvaluationId,
+                          typeEvaluationId: this.state.eval?.typeEvaluationId,
+                          description: this.state.eval?.description,
+                          rules: this.state.eval?.rules,
                         }}
-                        validationSchema={this.validationSchema}
+                        validationSchema={quizSchema}
                         onSubmit={(values, { setSubmitting, resetForm }) => {
-                          setSubmitting(true);
-                          console.log(values);
-                          setSubmitting(false);
+                          this.props.updateEval(values, () => {
+                            setSubmitting(true);
+                            setSubmitting(false);
+                            this.props.history.push('/quizes/list_quizes');
+                          });
                         }}
                       >
                         {({
@@ -69,158 +74,180 @@ export class UpdateQuiz extends Component {
                           handleBlur,
                           handleSubmit,
                           isSubmitting,
-                        }) => (
-                          <form className='settings-form' onSubmit={handleSubmit}>
-                            <div className='form-group'>
-                              <label htmlFor='exampleFormControlSelect1'>
-                                Nombre de evaluación
-                              </label>
-                              <input
-                                name='name'
-                                className='form-control'
-                                type='text'
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.name}
-                              />
-                              {
-                                <ErrorValidation
-                                  touched={touched.name}
-                                  message={errors.name}
+                        }) =>
+                          !this.props.eval ? (
+                            <Loader />
+                          ) : (
+                            <form className='settings-form' onSubmit={handleSubmit}>
+                              <div className='form-group'>
+                                <label htmlFor='exampleFormControlSelect1'>
+                                  Nombre de evaluación
+                                </label>
+                                <input
+                                  name='name'
+                                  className='form-control'
+                                  type='text'
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.name}
                                 />
-                              }
-                            </div>
-
-                            <div className='row'>
-                              <div className='col-md-4 form-group'>
-                                <label htmlFor='exampleFormControlSelect1'>
-                                  {' '}
-                                  Categoría
-                                </label>
-                                <select
-                                  name='categoryEvaluation'
-                                  className='form-control'
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.categoryEvaluation}
-                                >
-                                  <option selected={true} disabled>
-                                    Selecciona una categoría...
-                                  </option>
-
-                                  <option value='{{ cat.id }}'>
-                                    {'{ cat.category }'}
-                                  </option>
-                                </select>
                                 {
                                   <ErrorValidation
-                                    touched={touched.categoryEvaluation}
-                                    message={errors.categoryEvaluation}
+                                    touched={touched.name}
+                                    message={errors.name}
                                   />
                                 }
                               </div>
-                              <div className='col-md-4 form-group'>
-                                <label htmlFor='exampleFormControlSelect1'>
-                                  {' '}
-                                  Materia
-                                </label>
-                                <select
-                                  name='topicEvaluation'
-                                  className='form-control'
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.topicEvaluation}
-                                >
-                                  <option selected={true} disabled>
-                                    Selecciona una materia...
-                                  </option>
-                                  <option value='{{ topic.id }}'>
-                                    {'{ topic.topic }'}
-                                  </option>
-                                </select>
-                                {
-                                  <ErrorValidation
-                                    touched={touched.topicEvaluation}
-                                    message={errors.topicEvaluation}
-                                  />
-                                }
-                              </div>
-                              <div className='col-md-4 form-group'>
-                                <label htmlFor='exampleFormControlSelect1'>
-                                  Tipo de evaluacion
-                                </label>
-                                <select
-                                  name='typeEvaluation'
-                                  className='form-control'
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                  value={values.typeEvaluation}
-                                >
-                                  <option selected={true} disabled>
-                                    Selecciona un tipo de evaluacion...
-                                  </option>
-                                  <option value='{{ type.id }}'>{'type.type'}</option>
-                                </select>
-                                {
-                                  <ErrorValidation
-                                    touched={touched.typeEvaluation}
-                                    message={errors.topicEvaluation}
-                                  />
-                                }
-                              </div>
-                            </div>
 
-                            <div className='form-group'>
-                              <label htmlFor='description'> Descripción </label>
-                              <textarea
-                                name='description'
-                                placeholder='Da una descripción detallada de esta evaluación...'
-                                className='form-control'
-                                rows='3'
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.description}
-                              ></textarea>
-                              {
+                              <div className='row'>
+                                <div className='col-md-4 form-group'>
+                                  <label htmlFor='exampleFormControlSelect1'>
+                                    {' '}
+                                    Categoría
+                                  </label>
+                                  <select
+                                    name='categoryEvaluationId'
+                                    className='form-control'
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.categoryEvaluationId}
+                                  >
+                                    <option selected={true}>
+                                      Selecciona una categoría...
+                                    </option>
+
+                                    {this.props.evalType?.categoriesEvaluation &&
+                                      this.props.evalType?.categoriesEvaluation.map(
+                                        (cat) => (
+                                          <option key={cat.id} value={cat.id}>
+                                            {cat.category}
+                                          </option>
+                                        )
+                                      )}
+                                  </select>
+                                  {
+                                    <ErrorValidation
+                                      touched={touched.categoryEvaluation}
+                                      message={errors.categoryEvaluation}
+                                    />
+                                  }
+                                </div>
+                                <div className='col-md-4 form-group'>
+                                  <label htmlFor='exampleFormControlSelect1'>
+                                    {' '}
+                                    Materia
+                                  </label>
+                                  <select
+                                    name='topicEvaluationId'
+                                    className='form-control'
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.topicEvaluationId}
+                                  >
+                                    <option selected={true} disabled>
+                                      Selecciona una materia...
+                                    </option>
+                                    {this.props.evalType?.topicsEvaluation &&
+                                      this.props.evalType?.topicsEvaluation.map(
+                                        (topic) => (
+                                          <option key={topic.id} value={topic.id}>
+                                            {topic.topic}
+                                          </option>
+                                        )
+                                      )}
+                                  </select>
+                                  {
+                                    <ErrorValidation
+                                      touched={touched.topicEvaluation}
+                                      message={errors.topicEvaluation}
+                                    />
+                                  }
+                                </div>
+                                <div className='col-md-4 form-group'>
+                                  <label htmlFor='exampleFormControlSelect1'>
+                                    Tipo de evaluacion
+                                  </label>
+                                  <select
+                                    name='typeEvaluationId'
+                                    className='form-control'
+                                    onChange={handleChange}
+                                    onBlur={handleBlur}
+                                    value={values.typeEvaluationId}
+                                  >
+                                    <option selected={true} disabled>
+                                      Selecciona un tipo de evaluacion...
+                                    </option>
+                                    {this.props.evalType?.typesEvaluation &&
+                                      this.props.evalType?.typesEvaluation.map((type) => (
+                                        <option key={type.id} value={type.id}>
+                                          {type.type}
+                                        </option>
+                                      ))}
+                                  </select>
+                                  {
+                                    <ErrorValidation
+                                      touched={touched.typeEvaluation}
+                                      message={errors.topicEvaluation}
+                                    />
+                                  }
+                                </div>
+                              </div>
+
+                              <div className='form-group'>
+                                <label htmlFor='description'> Descripción </label>
+                                <textarea
+                                  name='description'
+                                  placeholder='Da una descripción detallada de esta evaluación...'
+                                  className='form-control'
+                                  rows='3'
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.description}
+                                ></textarea>
+                                {
+                                  <ErrorValidation
+                                    touched={touched.description}
+                                    message={errors.description}
+                                  />
+                                }
+                              </div>
+
+                              <div className='form-group'>
+                                <label htmlFor='evaluationRules'> Reglas </label>
+                                <textarea
+                                  name='rules'
+                                  placeholder='Crear reglas de la evaluación...'
+                                  className='form-control'
+                                  rows='3'
+                                  onChange={handleChange}
+                                  onBlur={handleBlur}
+                                  value={values.rules}
+                                ></textarea>
                                 <ErrorValidation
-                                  touched={touched.description}
-                                  message={errors.description}
+                                  touched={touched.rules}
+                                  message={errors.rules}
                                 />
-                              }
-                            </div>
+                              </div>
 
-                            <div className='form-group'>
-                              <label htmlFor='evaluationRules'> Reglas </label>
-                              <textarea
-                                name='rules'
-                                placeholder='Crear reglas de la evaluación...'
-                                className='form-control'
-                                rows='3'
-                                onChange={handleChange}
-                                onBlur={handleBlur}
-                                value={values.rules}
-                              ></textarea>
-                              <ErrorValidation
-                                touched={touched.rules}
-                                message={errors.rules}
-                              />
-                            </div>
-
-                            <div
-                              className='row'
-                              style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                              }}
-                            >
-                              <button type='submit' className='btn btn-primary btn-round'>
-                                <i className='fa fa-file-text-o' aria-hidden='true'></i>
-                                Actualizar
-                              </button>
-                            </div>
-                          </form>
-                        )}
+                              <div
+                                className='row'
+                                style={{
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                }}
+                              >
+                                <button
+                                  type='submit'
+                                  className='btn btn-primary btn-round'
+                                >
+                                  <i className='fa fa-file-text-o' aria-hidden='true'></i>
+                                  Actualizar
+                                </button>
+                              </div>
+                            </form>
+                          )
+                        }
                       </Formik>
                     </div>
                   </div>
@@ -234,4 +261,10 @@ export class UpdateQuiz extends Component {
   }
 }
 
-export default requireAuth(UpdateQuiz);
+const mapStateToProps = (state) => {
+  return { evalType: state.evals.evalTypes, eval: state.evals.eval };
+};
+
+export default compose(
+  connect(mapStateToProps, { fetchEvaluacionesTypes, fetchEval, updateEval })
+)(requireAuth(UpdateQuiz));

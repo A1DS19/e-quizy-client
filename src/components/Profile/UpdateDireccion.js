@@ -5,6 +5,7 @@ import { updateDireccion, getDireccionId, fetchAddresses } from '../../actions';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import ErrorValidation from '../resources/ErrorValidation';
+import { toast } from 'react-toastify';
 
 export class UpdateDireccion extends Component {
   state = {
@@ -70,6 +71,7 @@ export class UpdateDireccion extends Component {
                     console.log(values);
                     this.props.updateDireccion(this.state.userAddress.id, values, () => {
                       this.props.onClose();
+                      toast.warning('DIRECCION ACTUALIZADA CON EXITO');
                     });
                     setSubmitting(false);
                   }}
