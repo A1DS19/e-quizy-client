@@ -241,7 +241,7 @@ export const fetchEval = (id, callback) => {
 export const updateEval = (formvalues, callback) => {
   return async (dispatch) => {
     try {
-      await axios.put(`/api/Evaluation/update`, formvalues, {
+      await axios.put('/api/Evaluation/update', formvalues, {
         headers: {
           Authorization: localStorage.getItem('token'),
         },
