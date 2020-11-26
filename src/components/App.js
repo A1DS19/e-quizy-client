@@ -18,6 +18,7 @@ import UserProfileSettings from '../components/Profile/UserProfileSettings';
 import NewQuiz from './Quizes/NewQuiz';
 import ListQuizes from './Quizes/ListQuizes';
 import UpdateQuiz from './Quizes/UpdateQuiz';
+import Questions from './Quizes/answers/Questions';
 
 export class App extends Component {
   render() {
@@ -38,6 +39,7 @@ export class App extends Component {
           <Route exact path='/quizes/new_quiz' component={NewQuiz} />
           <Route exact path='/quizes/list_quizes' component={ListQuizes} />
           <Route exact path='/quizes/update_quiz/:id' component={UpdateQuiz} />
+          <Route exact path='/quizes/questions/:id' component={Questions} />
 
           {/* Componente not found debe ir de ultimo */}
           <Route exact path='*' component={NotFound} />
