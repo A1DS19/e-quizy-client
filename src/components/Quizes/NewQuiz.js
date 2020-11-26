@@ -75,7 +75,7 @@ export class NewQuiz extends Component {
                       onSubmit={(values, { setSubmitting, resetForm }) => {
                         setSubmitting(true);
                         this.props.addEval(values, () => {
-                          toast.warning('EVALUACION CREADA CON EXITO');
+                          toast.success('Evaluacion creada');
                           this.props.history.push('/quizes/list_quizes');
                         });
                         setSubmitting(false);

@@ -7,6 +7,8 @@ import requireAuth from '../../middlewares/requireAuth';
 import { fetchEvaluacionesTypes, fetchEval, updateEval } from '../../actions/index';
 import { quizSchema } from './quizValidation';
 import Loader from '../resources/Loader';
+import { toast } from 'react-toastify';
+
 export class UpdateQuiz extends Component {
   state = {
     eval: {},
@@ -65,6 +67,7 @@ export class UpdateQuiz extends Component {
                           this.props.updateEval(values, () => {
                             setSubmitting(false);
                             this.props.history.push('/quizes/list_quizes');
+                            toast.success('Prueba actualizada');
                           });
                         }}
                       >

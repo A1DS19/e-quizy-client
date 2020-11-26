@@ -50,7 +50,7 @@ export class UserDireccion extends Component {
   onClickDelete = (id) => {
     this.props.deleteAddress(id, () => {
       this.props.fetchAddresses();
-      toast.error('DIRECCION ElIMINADA CON EXITO');
+      toast.success('Direccion eliminada');
     });
   };
 

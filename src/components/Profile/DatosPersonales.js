@@ -28,7 +28,7 @@ export class DatosPersonales extends Component {
     console.log(newFormValues);
     this.props.updatePersonalData(newFormValues, () => {
       this.props.history.push('/profile/user_profile');
-      toast.warning('DATOS ACTUALIZADOS CON EXITO');
+      toast.success('Datos actualizados');
     });
   };
   renderError({ error, touched }) {
@@ -52,6 +52,7 @@ export class DatosPersonales extends Component {
     this.setState({ file: event.target.files[0] }, () => {
       this.props.updateImgState(this.state.file, () => {
         this.setState({ img: this.props.user.image });
+        toast.success('Imagen actualizada');
       });
     });
   };

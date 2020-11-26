@@ -15,7 +15,7 @@ export class ListAllQuizes extends Component {
   deleteQuizHandler = (id) => {
     this.props.deleteQuiz(id, () => {
       this.props.fetchEvals();
-      toast.success('PRUEBA ELIMINADA');
+      toast.success('Prueba eliminada');
     });
   };
 
@@ -65,7 +65,11 @@ export class ListAllQuizes extends Component {
                 Editar
               </Link>
 
-              <Link to='#' className='btn btn-primary ml-2' style={{ color: 'white' }}>
+              <Link
+                to={`/quizes/questions/${test.id}`}
+                className='btn btn-primary ml-2'
+                style={{ color: 'white' }}
+              >
                 Preguntas
               </Link>
             </div>

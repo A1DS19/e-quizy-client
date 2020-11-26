@@ -6,6 +6,7 @@ import { Formik } from 'formik';
 import * as Yup from 'yup';
 import ErrorValidation from '../resources/ErrorValidation';
 import { toast } from 'react-toastify';
+import Loader from '../resources/Loader';
 
 export class UpdateDireccion extends Component {
   state = {
@@ -71,7 +72,7 @@ export class UpdateDireccion extends Component {
                     console.log(values);
                     this.props.updateDireccion(this.state.userAddress.id, values, () => {
                       this.props.onClose();
-                      toast.warning('DIRECCION ACTUALIZADA CON EXITO');
+                      toast.success('Direccion actualizada');
                     });
                     setSubmitting(false);
                   }}
@@ -273,7 +274,7 @@ export class UpdateDireccion extends Component {
                   )}
                 </Formik>
               ) : (
-                <h3>Cargando datos...</h3>
+                <Loader />
               )}
             </div>
           </div>

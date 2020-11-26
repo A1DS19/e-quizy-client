@@ -58,7 +58,7 @@ export class CreateDireccion extends Component {
                   setSubmitting(true);
                   this.props.insertAddress(values, () => {
                     this.props.onClose();
-                    toast.warning('DIRECCION CREADA CON EXITO');
+                    toast.success('Direccion creada ');
                   });
                   setSubmitting(false);
                 }}
