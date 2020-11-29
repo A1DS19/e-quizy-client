@@ -1,15 +1,7 @@
 import React, { Fragment } from 'react';
 import Loader from '../../resources/Loader';
 
-function QuestionHeader({
-  question,
-  types,
-  categoriesQuest,
-  topicsQuest,
-  typesQuest,
-  onChange,
-  onBlur,
-}) {
+function QuestionHeader({ question, types, questionIndex, onChange, onBlur }) {
   return (
     <Fragment>
       {!types ? (
@@ -20,7 +12,7 @@ function QuestionHeader({
             <div className='col-md-4 form-group'>
               <label htmlFor='categoryQuestion'> Categoría</label>
               <select
-                name='categoryQuestion'
+                name={`questions.${questionIndex}.categoryQuestionId`}
                 className='form-control'
                 onChange={onChange}
                 onBlur={onBlur}
@@ -39,7 +31,7 @@ function QuestionHeader({
             <div className='col-md-4 form-group'>
               <label htmlFor='topicQuestion'> Materia</label>
               <select
-                name='topicQuestion'
+                name={`questions.${questionIndex}.topicQuestionId`}
                 className='form-control'
                 id='exampleFormControlSelect1'
                 onChange={onChange}
@@ -59,7 +51,7 @@ function QuestionHeader({
             <div className='col-md-4 form-group'>
               <label htmlFor='typeQuestion'>Tipo de pregunta</label>
               <select
-                name='typeQuestion'
+                name={`questions.${questionIndex}.typeQuestionId`}
                 className='form-control'
                 id='exampleFormControlSelect1'
                 onChange={onChange}

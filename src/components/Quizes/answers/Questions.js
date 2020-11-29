@@ -3,12 +3,13 @@ import { Accordion, Card } from 'react-bootstrap';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
 import { Formik, FieldArray, Form, Field } from 'formik';
-import QuestionHeader from './QuestionHeader';
 import QuestionDetail from './QuestionDetail';
+import QuestionHeader from './QuestionHeader';
 import { Link } from 'react-router-dom';
 import { fetchEvaluacionesTypes } from '../../../actions/index';
 import Loader from '../../resources/Loader';
 import { toast } from 'react-toastify';
+import { createEvalQuestion } from '../../../actions/index';
 
 export class Questions extends Component {
   componentDidMount() {
@@ -16,15 +17,20 @@ export class Questions extends Component {
   }
 
   defaultAnswer = {
-    id: 1,
-    answer: '',
+    id: 0,
+    answerContent: '',
+    correct: 0,
   };
 
   defaultQuestion = {
-    name: '',
+    evaluationId: this.props.match.params.id,
+    categoryQuestionId: 0,
+    topicQuestionId: 0,
+    typeQuestionId: 0,
+    question: '',
     answers: [this.defaultAnswer],
-    questionPoints: 1,
-    questionTime: 1,
+    points: 1,
+    timeToAnswer: 1,
   };
 
   render() {
@@ -67,16 +73,16 @@ export class Questions extends Component {
           <Formik
             enableReinitialize
             initialValues={{
-              categoryQuestion: 0,
-              topicQuestion: 0,
-              typeQuestion: 0,
               questions: [this.defaultQuestion],
             }}
-            onSubmit={(values) => {
-              console.log(values);
+            onSubmit={(values, { setSubmitting, resetForm }) => {
+              setSubmitting(true);
+              this.props.createEvalQuestion(values, () => {
+                setSubmitting(false);
+              });
             }}
           >
-            {({ values, handleChange, handleBlur }) => (
+            {({ values, handleChange, handleBlur, setFieldValue, setFieldTouched }) => (
               <Form>
                 <Accordion defaultActiveKey='0'>
                   <Card>
@@ -91,24 +97,6 @@ export class Questions extends Component {
                     <Accordion.Collapse eventKey='0'>
                       <Card.Body>
                         <Accordion defaultActiveKey='0'>
-                          <Card>
-                            <Accordion.Toggle as={Card.Header} eventKey='0'>
-                              Tipo de pregunta
-                            </Accordion.Toggle>
-                            <Accordion.Collapse eventKey='0'>
-                              <Card.Body>
-                                <QuestionHeader
-                                  question='question'
-                                  types={this.props.types}
-                                  categoriesQuest={values.categoryQuestion}
-                                  topicsQuest={values.topicQuestion}
-                                  typesQuest={values.typeQuestion}
-                                  onChange={handleChange}
-                                  onBlur={handleBlur}
-                                />
-                              </Card.Body>
-                            </Accordion.Collapse>
-                          </Card>
                           {!values.questions ? (
                             <Loader />
                           ) : (
@@ -150,6 +138,13 @@ export class Questions extends Component {
                                             eventKey={(question, index + 1)}
                                           >
                                             <Card.Body>
+                                              <QuestionHeader
+                                                question={question}
+                                                questionIndex={index}
+                                                types={this.props.types}
+                                                onChange={handleChange}
+                                                onBlur={handleBlur}
+                                              />
                                               <QuestionDetail
                                                 question={question}
                                                 questionIndex={index}
@@ -160,6 +155,8 @@ export class Questions extends Component {
                                                 FieldArray={FieldArray}
                                                 Field={Field}
                                                 defaultAnswer={this.defaultAnswer}
+                                                setFieldValue={setFieldValue}
+                                                setFieldTouched={setFieldTouched}
                                               />
                                             </Card.Body>
                                           </Accordion.Collapse>
@@ -197,4 +194,6 @@ const mapStateToProps = ({ evals }) => {
   return { types: evals.evalTypes };
 };
 
-export default compose(connect(mapStateToProps, { fetchEvaluacionesTypes }))(Questions);
+export default compose(
+  connect(mapStateToProps, { fetchEvaluacionesTypes, createEvalQuestion })
+)(Questions);

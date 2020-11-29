@@ -9,6 +9,9 @@ import {
   LOADING_QUIZES,
   FECTH_QUIZES,
   FETCH_SELECTED_QUIZ,
+  LOADING_EVAL_QUESTION,
+  FETCH_EVAL_QUESTION,
+  EVAL_QUESTION_ERROR,
 } from './types';
 import axios from 'axios';
 
@@ -249,6 +252,23 @@ export const updateEval = (formvalues, callback) => {
       callback();
     } catch (error) {
       dispatch({ type: EVALS_ERROR, payload: error.response.data });
+    }
+  };
+};
+
+//EVAL QUESTION:
+export const createEvalQuestion = (formvalues, callback) => {
+  return async (dispatch) => {
+    try {
+      const { data } = axios.post('/api/Evaluation/question/create', formvalues, {
+        headers: {
+          Authorization: localStorage.getItem('token'),
+        },
+      });
+      console.log(data);
+      callback();
+    } catch (error) {
+      console.log(error.response.data);
     }
   };
 };

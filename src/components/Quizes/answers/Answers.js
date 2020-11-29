@@ -1,12 +1,33 @@
 import React, { Fragment } from 'react';
 import { toast } from 'react-toastify';
 
-function Answers({ remove, index, onChange, onBlur, answer, questionIndex }) {
+function Answers({
+  remove,
+  index,
+  onChange,
+  onBlur,
+  answer,
+  questionIndex,
+  onClickCorrect,
+  setFieldValue,
+  setFieldTouched,
+}) {
   return (
     <Fragment>
       <label htmlFor='description' className='d-flex justify-content-between'>
         <i
-          className='fa fa-square-o text-primary'
+          onClick={() => {
+            setFieldValue(`questions.${questionIndex}.answers.${index}.correct`, 1, true);
+            setFieldTouched(
+              `questions.${questionIndex}.answers.${index}.correct`,
+              true,
+              false
+            );
+          }}
+          className={`${
+            answer.correct === 0 ? 'fa fa-square-o' : 'fa fa-check-square-o'
+          } text-primary`}
+          name={`questions.${questionIndex}.answers.${index}.correct`}
           aria-hidden='true'
           style={{
             cursor: 'pointer',
@@ -22,11 +43,22 @@ function Answers({ remove, index, onChange, onBlur, answer, questionIndex }) {
               fontSize: '18px',
             }}
           >
-            Respuesta {index + 1}
+            Correcto
           </span>
         </i>
         <i
-          className='fa fa-check-square-o text-primary'
+          onClick={() => {
+            setFieldValue(`questions.${questionIndex}.answers.${index}.correct`, 0, true);
+            setFieldTouched(
+              `questions.${questionIndex}.answers.${index}.correct`,
+              true,
+              false
+            );
+          }}
+          className={`${
+            answer.correct === 1 ? 'fa fa-square-o' : 'fa fa-check-square-o'
+          } text-primary`}
+          name={`questions.${questionIndex}.answers.${index}.correct`}
           aria-hidden='true'
           style={{
             cursor: 'pointer',
@@ -42,7 +74,7 @@ function Answers({ remove, index, onChange, onBlur, answer, questionIndex }) {
               fontSize: '18px',
             }}
           >
-            Respuesta {index + 1}
+            Incorrecto
           </span>
         </i>
 
@@ -58,7 +90,7 @@ function Answers({ remove, index, onChange, onBlur, answer, questionIndex }) {
         ></i>
       </label>
       <textarea
-        name={`questions.${questionIndex}.answers.${index}.answer`}
+        name={`questions.${questionIndex}.answers.${index}.answerContent`}
         placeholder='Agregue una respuesta...'
         className='form-control'
         rows='1'
