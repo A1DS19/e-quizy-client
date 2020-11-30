@@ -14,8 +14,9 @@ function QuestionDetail({
   setFieldValue,
   setFieldTouched,
 }) {
-  const [points, setPoints] = useState(!question.points ? 1 : question.points);
-  const [time, setTime] = useState(!question.timeToAnswer ? 1 : question.timeToAnswer);
+  console.log(question);
+  const [points, setPoints] = useState(!question?.points ? 1 : question?.points);
+  const [time, setTime] = useState(!question?.timeToAnswer ? 1 : question?.timeToAnswer);
 
   const handlePointsChange = (e) => {
     setPoints(e.target.value);

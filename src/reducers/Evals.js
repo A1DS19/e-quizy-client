@@ -4,6 +4,7 @@ import {
   LOADING_QUIZES,
   FECTH_QUIZES,
   FETCH_SELECTED_QUIZ,
+  FETCH_EVAL_QUESTION,
 } from '../actions/types';
 
 const initialState = {
@@ -11,6 +12,7 @@ const initialState = {
   evalsList: [],
   evalTypes: [],
   eval: {},
+  evalQuestions: {},
   errorMessage: '',
 };
 
@@ -24,6 +26,8 @@ export default (state = initialState, action) => {
       return { ...state, loading: false, evalsList: action.payload };
     case FETCH_EVALS_TYPES:
       return { ...state, loading: false, evalTypes: action.payload };
+    case FETCH_EVAL_QUESTION:
+      return { ...state, loading: false, evalQuestions: action.payload };
     case EVALS_ERROR:
       return { ...state, loading: false, errorMessage: action.payload };
     default:

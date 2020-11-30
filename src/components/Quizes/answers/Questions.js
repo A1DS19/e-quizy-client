@@ -9,11 +9,12 @@ import { Link } from 'react-router-dom';
 import { fetchEvaluacionesTypes } from '../../../actions/index';
 import Loader from '../../resources/Loader';
 import { toast } from 'react-toastify';
-import { createEvalQuestion } from '../../../actions/index';
+import { createEvalQuestion, fetchEvalQuestion } from '../../../actions/index';
 
 export class Questions extends Component {
   componentDidMount() {
     this.props.fetchEvaluacionesTypes();
+    this.props.fetchEvalQuestion(this.props.match.params.id);
   }
 
   defaultAnswer = {
@@ -24,9 +25,9 @@ export class Questions extends Component {
 
   defaultQuestion = {
     evaluationId: this.props.match.params.id,
-    categoryQuestionId: 0,
-    topicQuestionId: 0,
-    typeQuestionId: 0,
+    categoryQuestionId: 1,
+    topicQuestionId: 1,
+    typeQuestionId: 1,
     question: '',
     answers: [this.defaultAnswer],
     points: 1,
@@ -67,18 +68,23 @@ export class Questions extends Component {
         <div className='container'>
           <div className='row'>
             <div className='col-md-12'>
-              <h3 className='title'>evaluation.name</h3>
+              <h3 className='title'>{this.props.eval?.name}</h3>
             </div>
           </div>
           <Formik
             enableReinitialize
             initialValues={{
-              questions: [this.defaultQuestion],
+              questions:
+                this.props.eval?.quizQuestions === undefined
+                  ? [this.defaultQuestion]
+                  : this.props.eval?.quizQuestions,
             }}
             onSubmit={(values, { setSubmitting, resetForm }) => {
               setSubmitting(true);
               this.props.createEvalQuestion(values, () => {
                 setSubmitting(false);
+                toast.success('Preguntas creadas y/o actualizadas');
+                this.props.history.push('/quizes/list_quizes');
               });
             }}
           >
@@ -88,11 +94,6 @@ export class Questions extends Component {
                   <Card>
                     <Accordion.Toggle as={Card.Header} eventKey='0'>
                       Configurar una pregunta nueva...
-                      <i
-                        className='fa fa-trash-o text-danger pt-2'
-                        aria-hidden='true'
-                        style={{ float: 'right', cursor: 'pointer', fontSize: '20px' }}
-                      />
                     </Accordion.Toggle>
                     <Accordion.Collapse eventKey='0'>
                       <Card.Body>
@@ -107,6 +108,16 @@ export class Questions extends Component {
                                 const { questions } = values;
                                 return (
                                   <div>
+                                    <div className='text-center m-2'>
+                                      <i
+                                        className='fa fa-plus mr-1'
+                                        style={{ fontSize: '30px' }}
+                                        onClick={() => {
+                                          push(this.defaultQuestion);
+                                        }}
+                                      />
+                                    </div>
+
                                     {questions.map((question, index) => (
                                       <Card key={index}>
                                         <Fragment>
@@ -127,11 +138,6 @@ export class Questions extends Component {
                                               style={{
                                                 float: 'right',
                                               }}
-                                            />
-                                            <i
-                                              className='fa fa-plus mr-1'
-                                              style={{ float: 'right' }}
-                                              onClick={() => push(this.defaultQuestion)}
                                             />
                                           </Accordion.Toggle>
                                           <Accordion.Collapse
@@ -170,12 +176,18 @@ export class Questions extends Component {
                           )}
                         </Accordion>
                         <div className='text-center'>
-                          <button type='submit' className='btn btn-primary btn-round m-2'>
-                            Guardar
-                          </button>
-                          <button type='submit' className='btn btn-primary btn-round m-2'>
-                            Actualizar
-                          </button>
+                          <div className='text-center m-2'>
+                            {values.questions.length !== 0 ? (
+                              <button
+                                type='submit'
+                                className='btn btn-primary btn-round m-2'
+                              >
+                                Guardar
+                              </button>
+                            ) : (
+                              <h5>Click en el + para agregar una pregunta</h5>
+                            )}
+                          </div>
                         </div>
                       </Card.Body>
                     </Accordion.Collapse>
@@ -191,9 +203,13 @@ export class Questions extends Component {
 }
 
 const mapStateToProps = ({ evals }) => {
-  return { types: evals.evalTypes };
+  return { types: evals.evalTypes, eval: evals.evalQuestions };
 };
 
 export default compose(
-  connect(mapStateToProps, { fetchEvaluacionesTypes, createEvalQuestion })
+  connect(mapStateToProps, {
+    fetchEvaluacionesTypes,
+    createEvalQuestion,
+    fetchEvalQuestion,
+  })
 )(Questions);

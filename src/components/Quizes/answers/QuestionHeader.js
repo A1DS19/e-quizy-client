@@ -15,12 +15,13 @@ function QuestionHeader({ question, types, questionIndex, onChange, onBlur }) {
                 name={`questions.${questionIndex}.categoryQuestionId`}
                 className='form-control'
                 onChange={onChange}
+                value={question.categoryQuestion && question.categoryQuestion.id}
                 onBlur={onBlur}
               >
-                <option selected={true} disabled>
+                <option selected disabled>
                   Selecciona una categoría...
                 </option>
-                {/* <option value={categoriesQuest.id}> {categoriesQuest.category} </option> */}
+
                 {types.categoriesEvaluation?.map((cat) => (
                   <option key={cat.id} value={cat.id}>
                     {cat.category}
@@ -35,12 +36,13 @@ function QuestionHeader({ question, types, questionIndex, onChange, onBlur }) {
                 className='form-control'
                 id='exampleFormControlSelect1'
                 onChange={onChange}
+                value={question.topicQuetion && question.topicQuetion.id}
                 onBlur={onBlur}
               >
                 <option selected disabled>
                   Selecciona una materia...
                 </option>
-                {/* <option value={topicsQuest.id}>{topicsQuest.topic}</option> */}
+
                 {types.topicsEvaluation?.map((topic) => (
                   <option key={topic.id} value={topic.id}>
                     {topic.topic}
@@ -54,13 +56,14 @@ function QuestionHeader({ question, types, questionIndex, onChange, onBlur }) {
                 name={`questions.${questionIndex}.typeQuestionId`}
                 className='form-control'
                 id='exampleFormControlSelect1'
+                value={question.typeQuestion && question.typeQuestion.id}
                 onChange={onChange}
                 onBlur={onBlur}
               >
                 <option selected disabled>
                   Selecciona un tipo de pregunta...
                 </option>
-                {/* <option value={typesQuest.id}>{typesQuest.type}</option> */}
+
                 {types.typesEvaluation?.map((type) => (
                   <option key={type.id} value={type.id}>
                     {type.type}

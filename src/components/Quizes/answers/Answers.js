@@ -96,6 +96,7 @@ function Answers({
         rows='1'
         onChange={onChange}
         onBlur={onBlur}
+        value={answer.answerContent}
       ></textarea>
     </Fragment>
   );
