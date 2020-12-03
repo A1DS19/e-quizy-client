@@ -8,6 +8,7 @@ import QuestionHeader from './QuestionHeader';
 import { Link } from 'react-router-dom';
 import { fetchEvaluacionesTypes } from '../../../actions/index';
 import Loader from '../../resources/Loader';
+import SmallLoader from '../../resources/SmallLoader';
 import { toast } from 'react-toastify';
 import { createEvalQuestion, fetchEvalQuestion } from '../../../actions/index';
 
@@ -88,7 +89,14 @@ export class Questions extends Component {
               });
             }}
           >
-            {({ values, handleChange, handleBlur, setFieldValue, setFieldTouched }) => (
+            {({
+              values,
+              handleChange,
+              handleBlur,
+              setFieldValue,
+              setFieldTouched,
+              isSubmitting,
+            }) => (
               <Form>
                 <Accordion defaultActiveKey='0'>
                   <Card>
@@ -182,7 +190,7 @@ export class Questions extends Component {
                                 type='submit'
                                 className='btn btn-primary btn-round m-2'
                               >
-                                Guardar
+                                {isSubmitting === true ? <SmallLoader /> : 'Guardar'}
                               </button>
                             ) : (
                               <h5>Click en el + para agregar una pregunta</h5>
