@@ -7,6 +7,7 @@ import ErrorValidation from '../resources/ErrorValidation';
 import requireAuth from '../../middlewares/requireAuth';
 import { fetchEvaluacionesTypes, addEval } from '../../actions/index';
 import { toast } from 'react-toastify';
+import SmallLoader from '../resources/SmallLoader';
 
 export class NewQuiz extends Component {
   state = {
@@ -75,10 +76,10 @@ export class NewQuiz extends Component {
                       onSubmit={(values, { setSubmitting, resetForm }) => {
                         setSubmitting(true);
                         this.props.addEval(values, () => {
+                          setSubmitting(false);
                           toast.success('Evaluacion creada');
                           this.props.history.push('/quizes/list_quizes');
                         });
-                        setSubmitting(false);
                       }}
                     >
                       {({
@@ -238,8 +239,13 @@ export class NewQuiz extends Component {
                             }}
                           >
                             <button type='submit' className='btn btn-primary btn-round'>
-                              <i className='fa fa-file-text-o' aria-hidden='true'></i>
-                              Crear
+                              <i
+                                className={
+                                  isSubmitting === true ? null : 'fa fa-file-text-o'
+                                }
+                                aria-hidden='true'
+                              ></i>
+                              {isSubmitting === true ? <SmallLoader /> : 'Crear'}
                             </button>
                           </div>
                         </form>
