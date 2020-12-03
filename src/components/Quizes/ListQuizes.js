@@ -33,13 +33,6 @@ export class ListQuizes extends Component {
                 </div>
                 <div className='article'>
                   <div className='row' style={{ position: 'relative' }}>
-                    {/* <evaluation
-              *ngFor="let eval of evaluations"
-              [eval]="eval"
-              (edit)="edit($event)"
-              (delete)="delete($event)"
-              (selectQuestionsList)="selectQuestionsList($event)"
-            ></evaluation> */}
                     <ListAllQuizes />
                   </div>
                 </div>
