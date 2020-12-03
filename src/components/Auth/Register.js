@@ -5,11 +5,12 @@ import { reduxForm, Field } from 'redux-form';
 import * as emailValidate from 'email-validator';
 import { connect } from 'react-redux';
 import { signUp } from '../../actions';
+import { toast } from 'react-toastify';
 
 export class Register extends Component {
   onSubmit = (formValues) => {
     this.props.signUp(formValues, () => {
-      console.log(formValues);
+      toast.success('Bienvenido favor logearse');
       this.props.history.push('/auth/login');
     });
   };
