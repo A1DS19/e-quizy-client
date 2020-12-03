@@ -79,11 +79,7 @@ function Answers({
         </i>
 
         <i
-          onClick={() =>
-            index === 0
-              ? toast.warning('Debe existir al menos una respuesta!')
-              : remove(index)
-          }
+          onClick={() => remove(index)}
           className='fa fa-minus text-primary'
           aria-hidden='true'
           style={{ cursor: 'pointer', fontSize: '20px' }}
