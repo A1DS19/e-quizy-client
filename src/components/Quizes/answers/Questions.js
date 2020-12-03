@@ -11,6 +11,7 @@ import Loader from '../../resources/Loader';
 import SmallLoader from '../../resources/SmallLoader';
 import { toast } from 'react-toastify';
 import { createEvalQuestion, fetchEvalQuestion } from '../../../actions/index';
+import requireAuth from '../../../middlewares/requireAuth';
 
 export class Questions extends Component {
   componentDidMount() {
@@ -135,13 +136,7 @@ export class Questions extends Component {
                                           >
                                             Detalles de pregunta
                                             <i
-                                              onClick={() =>
-                                                index === 0
-                                                  ? toast.warning(
-                                                      'Debe existir al menos una pregunta!'
-                                                    )
-                                                  : remove(index)
-                                              }
+                                              onClick={() => remove(index)}
                                               className='fa fa-trash-o text-danger'
                                               style={{
                                                 float: 'right',
@@ -220,4 +215,4 @@ export default compose(
     createEvalQuestion,
     fetchEvalQuestion,
   })
-)(Questions);
+)(requireAuth(Questions));
