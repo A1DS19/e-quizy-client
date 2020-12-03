@@ -20,6 +20,23 @@ export class ListAllQuizes extends Component {
   };
 
   fetchQuizez = () => {
+    if (this.props.evals?.length === 0) {
+      return (
+        <div className='container'>
+          <div className='text-center'>
+            <h3>No hay pruebas favor crear una</h3>
+            <Link
+              to='/quizes/new_quiz'
+              className='btn btn-primary btn-round ml-2 mt-1'
+              style={{ color: 'white' }}
+            >
+              <i className='fa fa-plus-square mr-1'></i>
+              Crear
+            </Link>
+          </div>
+        </div>
+      );
+    }
     if (!this.props.evals) {
       return <Loader />;
     }
