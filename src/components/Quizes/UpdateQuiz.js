@@ -7,7 +7,9 @@ import requireAuth from '../../middlewares/requireAuth';
 import { fetchEvaluacionesTypes, fetchEval, updateEval } from '../../actions/index';
 import { quizSchema } from './quizValidation';
 import Loader from '../resources/Loader';
+import SmallLoader from '../resources/SmallLoader';
 import { toast } from 'react-toastify';
+import { Link } from 'react-router-dom';
 
 export class UpdateQuiz extends Component {
   state = {
@@ -246,9 +248,22 @@ export class UpdateQuiz extends Component {
                                   type='submit'
                                   className='btn btn-primary btn-round'
                                 >
-                                  <i className='fa fa-file-text-o' aria-hidden='true'></i>
-                                  Actualizar
+                                  <i
+                                    className={
+                                      isSubmitting === true ? null : 'fa fa-file-text-o'
+                                    }
+                                    aria-hidden='true'
+                                  ></i>
+                                  {isSubmitting === true ? <SmallLoader /> : 'Actualizar'}
                                 </button>
+                                <Link
+                                  to='/quizes/list_quizes'
+                                  className='btn btn-primary btn-round ml-2'
+                                  style={{ color: 'white' }}
+                                >
+                                  <i className='fa fa-window-close mr-1'></i>
+                                  cancelar
+                                </Link>
                               </div>
                             </form>
                           )
